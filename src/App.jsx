@@ -5,9 +5,19 @@ import { ProtectedRouteSitter } from "./Routes/ProtectedRouteSitter";
 import { Homepage } from "./Views/Homepage";
 import { RegisterPage } from "./Views/RegisterPage";
 import { LoginPage } from "./Views/LoginPage";
+import { Navbar } from "./Componentes/Wrappers/Navbar"
+import { Footer } from "./Componentes/Wrappers/Footer"
+import { Button } from "./Componentes/UI/Button"
+import { Input } from "./Componentes/UI/Input"
+import { Card } from "./Componentes/UI/Card"
+import { ErrorMessage } from "./Componentes/UI/ErrorMessage"
+import { LoadingSpinner } from "./Componentes/UI/LoadingSpinner"
+import { EmptyState } from "./Componentes/UI/EmptyState"
 export const App = () => {
   return (
     <BrowserRouter>
+      <Navbar />
+     
       <Routes>
         {/*Rutas publicas*/}
         <Route path="/" element={<Homepage />} />
@@ -41,6 +51,7 @@ export const App = () => {
           <Route path="/sitter/schedule" element={<ScheduleManagement />} />
         </Route> */}
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 };

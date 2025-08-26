@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        w: "#EDECE6",
-        ts: "#00C4D0",
-        hb: "#016096",
-        c: "#333333",
+        w: "#EEF1F6",
+        ts: "#6d81c8",
+        hb: "#407C87",
+        c: "#D3E1E2",
       },
     },
   },
