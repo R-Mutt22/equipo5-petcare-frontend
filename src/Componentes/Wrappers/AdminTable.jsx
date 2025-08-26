@@ -35,11 +35,11 @@ export const AdminTable = () => {
           {getTableData().map((item) => (  
             <tr key={item.id_user}>  
               <td>{item.id_user}</td>  
-              <td>{item.name_user}</td>  
-              <td>{item.email_user}</td>  
-              <td>{item.role_user}</td>  
-              <td>{item.phone_user}</td>  
-              <td>{item.active_user ? "Activo" : "Inactivo"}</td>  
+              <td>{item.name}</td>  
+              <td>{item.email}</td>  
+              <td>{item.role}</td>  
+              <td>{item.phone}</td>  
+              <td>{item.active ? "Activo" : "Inactivo"}</td>  
               <td>  
                 <button className="btn btn-sm btn-error">Eliminar</button>  
               </td>  

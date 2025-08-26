@@ -4,12 +4,12 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
       <header className="flex justify-between">  
         <div>  
           <p className="font-medium text-gray-800 text-lg">  
-            {pet.name_pet}  
+            {pet.name}  
           </p>  
-          <p className="font-medium text-gray-600">TIPO: {pet.type_pet}</p>  
-          <p className="font-medium text-gray-600">RAZA: {pet.breed_pet}</p>  
-          <p className="font-medium text-gray-600">EDAD: {pet.age_pet} años</p>  
-          <p className="font-medium text-gray-600">DUEÑO ID: {pet.id_user_pet}</p>  
+          <p className="font-medium text-gray-600">TIPO: {pet.type}</p>  
+          <p className="font-medium text-gray-600">RAZA: {pet.breed}</p>  
+          <p className="font-medium text-gray-600">EDAD: {pet.age} años</p>  
+          <p className="font-medium text-gray-600">DUEÑO ID: {pet.id_user}</p>  
         </div>  
         <div className="flex gap-2">  
           <button   
@@ -26,8 +26,8 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
           </button>  
         </div>  
       </header>  
-      {pet.special_notes_pet && (  
-        <p className="font-medium text-gray-600 mt-2">NOTAS: {pet.special_notes_pet}</p>  
+      {pet.special_notes && (  
+        <p className="font-medium text-gray-600 mt-2">NOTAS: {pet.special_notes}</p>  
       )}  
     </div>  
   );  
