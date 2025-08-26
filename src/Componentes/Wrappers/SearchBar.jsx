@@ -1,30 +1,31 @@
-import { useState } from "react";  
-  
 export const SearchBar = ({   
   onSearch,   
+  searchType = "users", // "users", "pets", "services", "bookings"  
   placeholder = "Buscar...",  
   className = ""   
 }) => {  
   const [searchTerm, setSearchTerm] = useState("");  
   
-  const handleSubmit = (e) => {  
-    e.preventDefault();  
-    onSearch(searchTerm);  
+  const getPlaceholder = () => {  
+    switch(searchType) {  
+      case "users": return "Buscar por nombre, email o teléfono...";  
+      case "pets": return "Buscar por nombre de mascota o tipo...";  
+      case "services": return "Buscar por tipo de servicio...";  
+      case "bookings": return "Buscar por ID de reserva...";  
+      default: return placeholder;  
+    }  
   };  
   
   return (  
-    <form onSubmit={handleSubmit} className={`flex gap-2 ${className}`}>  
+    <form onSubmit={(e) => { e.preventDefault(); onSearch(searchTerm); }} className={`flex gap-2 ${className}`}>  
       <input  
         type="text"  
         value={searchTerm}  
         onChange={(e) => setSearchTerm(e.target.value)}  
-        placeholder={placeholder}  
+        placeholder={getPlaceholder()}  
         className="input input-bordered flex-1"  
       />  
       <button type="submit" className="btn btn-primary">  
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">  
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />  
-        </svg>  
         Buscar  
       </button>  
     </form>  

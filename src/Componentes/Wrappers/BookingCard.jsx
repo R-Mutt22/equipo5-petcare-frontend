@@ -4,27 +4,27 @@ export const BookingCard = ({ booking, onCancel, onEdit }) => {
       <header className="flex justify-between">  
         <div>  
           <p className="font-medium text-gray-800 text-lg">  
-            RESERVA #{booking.id}  
+            RESERVA #{booking.id_booking}  
           </p>  
-          <p className="font-medium text-gray-600">MASCOTA: {booking.petName}</p>  
-          <p className="font-medium text-gray-600">SERVICIO: {booking.serviceName}</p>  
-          <p className="font-medium text-gray-600">CUIDADOR (SITTER): {booking.sitterName}</p>  
-          <p className="font-medium text-gray-600">DUEÑO (OWNER): {booking.ownerName}</p>  
-          <p className="font-medium text-gray-600">FECHA: {new Date(booking.date).toLocaleDateString()}</p>  
-          <p className="font-medium text-gray-600">HORA: {booking.time}</p>  
+          <p className="font-medium text-gray-600">USUARIO ID: {booking.id_user_booking}</p>  
+          <p className="font-medium text-gray-600">SERVICIO ID: {booking.id_service_booking}</p>  
+          <p className="font-medium text-gray-600">MASCOTA ID: {booking.id_pet_booking}</p>  
+          <p className="font-medium text-gray-600">INICIO: {new Date(booking.start_date_booking).toLocaleString()}</p>  
+          <p className="font-medium text-gray-600">FIN: {new Date(booking.end_date_booking).toLocaleString()}</p>  
+          <p className="font-medium text-gray-600">PRECIO TOTAL: ${booking.total_price_booking}</p>  
           <p className="font-medium text-gray-600">ESTADO:   
             <span className={`ml-2 badge ${  
-              booking.status === "Activa" ? "badge-success" :  
-              booking.status === "Pendiente" ? "badge-warning" :  
-              booking.status === "Cancelada" ? "badge-error" :  
+              booking.status_booking === "confirmed" ? "badge-success" :  
+              booking.status_booking === "pending" ? "badge-warning" :  
+              booking.status_booking === "cancelled" ? "badge-error" :  
               "badge-info"  
             }`}>  
-              {booking.status}  
+              {booking.status_booking}  
             </span>  
           </p>  
         </div>  
         <div className="flex gap-2">  
-          {booking.status === "Activa" && (  
+          {booking.status_booking === "confirmed" && (  
             <>  
               <button   
                 onClick={() => onEdit(booking)}  
@@ -33,7 +33,7 @@ export const BookingCard = ({ booking, onCancel, onEdit }) => {
                 Editar  
               </button>  
               <button   
-                onClick={() => onCancel(booking.id)}  
+                onClick={() => onCancel(booking.id_booking)}  
                 className="btn btn-sm btn-error"  
               >  
                 Cancelar  
@@ -42,8 +42,8 @@ export const BookingCard = ({ booking, onCancel, onEdit }) => {
           )}  
         </div>  
       </header>  
-      {booking.notes && (  
-        <p className="font-medium text-gray-600 mt-2">NOTAS: {booking.notes}</p>  
+      {booking.special_requests_booking && (  
+        <p className="font-medium text-gray-600 mt-2">SOLICITUDES: {booking.special_requests_booking}</p>  
       )}  
     </div>  
   );  

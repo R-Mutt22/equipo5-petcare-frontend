@@ -6,6 +6,7 @@ export const Select = ({
   label,  
   error,  
   required = false,  
+  dataType = "string", // Nuevo prop para manejar tipos  
   className = "",  
   ...props   
 }) => {  

@@ -4,12 +4,10 @@ export const ServiceCard = ({ service, onEdit, onDelete }) => {
       <header className="flex justify-between">  
         <div>  
           <p className="font-medium text-gray-800 text-lg">  
-            {service.name}  
+            {service.type_service}  
           </p>  
-          <p className="font-medium text-gray-600">TIPO: {service.type}</p>  
-          <p className="font-medium text-gray-600">PRECIO: ${service.price}</p>  
-          <p className="font-medium text-gray-600">DURACIÓN: {service.duration} horas</p>  
-          <p className="font-medium text-gray-600">CUIDADOR (SITTER): {service.sitterName}</p>  
+          <p className="font-medium text-gray-600">TARIFA: ${service.rate_service}</p>  
+          <p className="font-medium text-gray-600">SITTER ID: {service.id_user_service}</p>  
         </div>  
         <div className="flex gap-2">  
           <button   
@@ -19,15 +17,15 @@ export const ServiceCard = ({ service, onEdit, onDelete }) => {
             Editar  
           </button>  
           <button   
-            onClick={() => onDelete(service.id)}  
+            onClick={() => onDelete(service.id_service)}  
             className="btn btn-sm btn-error"  
           >  
             Eliminar  
           </button>  
         </div>  
       </header>  
-      {service.description && (  
-        <p className="font-medium text-gray-600 mt-2">DESCRIPCIÓN: {service.description}</p>  
+      {service.description_service && (  
+        <p className="font-medium text-gray-600 mt-2">DESCRIPCIÓN: {service.description_service}</p>  
       )}  
     </div>  
   );  

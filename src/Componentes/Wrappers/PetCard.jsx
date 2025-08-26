@@ -4,12 +4,12 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
       <header className="flex justify-between">  
         <div>  
           <p className="font-medium text-gray-800 text-lg">  
-            {pet.name}  
+            {pet.name_pet}  
           </p>  
-          <p className="font-medium text-gray-600">ESPECIE: {pet.species}</p>  
-          <p className="font-medium text-gray-600">RAZA: {pet.breed}</p>  
-          <p className="font-medium text-gray-600">EDAD: {pet.age} años</p>  
-          <p className="font-medium text-gray-600">DUEÑO (OWNER): {pet.ownerName}</p>  
+          <p className="font-medium text-gray-600">TIPO: {pet.type_pet}</p>  
+          <p className="font-medium text-gray-600">RAZA: {pet.breed_pet}</p>  
+          <p className="font-medium text-gray-600">EDAD: {pet.age_pet} años</p>  
+          <p className="font-medium text-gray-600">DUEÑO ID: {pet.id_user_pet}</p>  
         </div>  
         <div className="flex gap-2">  
           <button   
@@ -19,15 +19,15 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
             Editar  
           </button>  
           <button   
-            onClick={() => onDelete(pet.id)}  
+            onClick={() => onDelete(pet.id_pet)}  
             className="btn btn-sm btn-error"  
           >  
             Eliminar  
           </button>  
         </div>  
       </header>  
-      {pet.description && (  
-        <p className="font-medium text-gray-600 mt-2">DESCRIPCIÓN: {pet.description}</p>  
+      {pet.special_notes_pet && (  
+        <p className="font-medium text-gray-600 mt-2">NOTAS: {pet.special_notes_pet}</p>  
       )}  
     </div>  
   );  
