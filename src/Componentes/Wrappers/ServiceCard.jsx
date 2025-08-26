@@ -4,10 +4,10 @@ export const ServiceCard = ({ service, onEdit, onDelete }) => {
       <header className="flex justify-between">  
         <div>  
           <p className="font-medium text-gray-800 text-lg">  
-            {service.type_service}  
+            {service.type}  
           </p>  
-          <p className="font-medium text-gray-600">TARIFA: ${service.rate_service}</p>  
-          <p className="font-medium text-gray-600">SITTER ID: {service.id_user_service}</p>  
+          <p className="font-medium text-gray-600">TARIFA: ${service.rate}</p>  
+          <p className="font-medium text-gray-600">SITTER ID: {service.id_user}</p>  
         </div>  
         <div className="flex gap-2">  
           <button   
@@ -24,8 +24,8 @@ export const ServiceCard = ({ service, onEdit, onDelete }) => {
           </button>  
         </div>  
       </header>  
-      {service.description_service && (  
-        <p className="font-medium text-gray-600 mt-2">DESCRIPCIÓN: {service.description_service}</p>  
+      {service.description && (  
+        <p className="font-medium text-gray-600 mt-2">DESCRIPCIÓN: {service.description}</p>  
       )}  
     </div>  
   );  

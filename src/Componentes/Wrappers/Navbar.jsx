@@ -77,9 +77,12 @@ export const Navbar = () => {
         <Link to="/admin" className="btn btn-sm mr-2 btn-outline btn-accent">  
           Admin  
         </Link>  
-        <Link to="/login" className="btn btn-sm btn-primary">  
+        {/* <Link to="/login" className="btn btn-sm mr-2 btn-primary">  
           Iniciar Sesión  
         </Link>  
+        <Link to="/register" className="btn btn-sm btn-outline">  
+          Registrarse  
+        </Link>   */}
       </div>  
     </div>  
   );  
