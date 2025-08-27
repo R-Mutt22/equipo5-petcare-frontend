@@ -86,7 +86,6 @@ export const RegisterPage = () => {
               <option value="">Selecciona un rol</option>
               <option value="owner">Dueño</option>
               <option value="sitter">Cuidador</option>
-              <option value="admin">Administrador</option>
             </select>
             {formik.touched.role && formik.errors.role && (
               <span className="text-red-500 text-sm mt-1">⚠️ {formik.errors.role}</span>
