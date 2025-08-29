@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";  
-import { registerOwnerRequest, loginOwnerRequest /*, verifyOwnerTokenRequest */ } from "../api/user.auth";  
+import { registerOwnerRequest, loginOwnerRequest , verifyOwnerTokenRequest } from "../api/user.auth";  
   
 export const OwnerContext = createContext();  
   
@@ -21,8 +21,8 @@ export const OwnerProvider = ({ children }) => {
   const signup = async (ownerData) => {  
     try {  
       const res = await registerOwnerRequest(ownerData);  
-     /*  const token = res.data;  
-      localStorage.setItem("token", token);   */
+      const token = res.data;  
+      localStorage.setItem("token", token);  
       setOwner(res.data);  
       setIsAuthenticatedOwner(true);  
     } catch (error) {  
@@ -33,9 +33,9 @@ export const OwnerProvider = ({ children }) => {
   const signin = async (ownerData) => {  
     try {  
       const res = await loginOwnerRequest(ownerData);  
-      /* const token = res.data;  
+      const token = res.data;  
       localStorage.setItem("token", token);  
-      const resOwner = await verifyOwnerTokenRequest({ token });  */ 
+      const resOwner = await verifyOwnerTokenRequest({ token });  
       setOwner(resOwner);  
       setIsAuthenticatedOwner(true);  
     } catch (error) {  
@@ -47,7 +47,7 @@ export const OwnerProvider = ({ children }) => {
   };  
   
   const logout = () => {  
-   /*  localStorage.removeItem("token");  */ 
+    localStorage.removeItem("token");  
     setOwner(null);  
     setIsAuthenticatedOwner(false);  
   };  
