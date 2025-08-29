@@ -68,7 +68,7 @@ export const Navbar = () => {
       </div>  
   
       <div className="navbar-end hidden lg:flex">  
-        <Link to="/pets" className="btn btn-sm mr-2 btn-outline btn-primary">  
+        {/* <Link to="/pets" className="btn btn-sm mr-2 btn-outline btn-primary">  
           Mis Mascotas  
         </Link>  
         <Link to="/my-services" className="btn btn-sm mr-2 btn-outline btn-secondary">  
@@ -76,13 +76,13 @@ export const Navbar = () => {
         </Link>  
         <Link to="/admin" className="btn btn-sm mr-2 btn-outline btn-accent">  
           Admin  
-        </Link>  
-        {/* <Link to="/login" className="btn btn-sm mr-2 btn-primary">  
+        </Link>  */} 
+        <Link to="/login" className="btn btn-sm mr-2 btn-primary">  
           Iniciar Sesión  
         </Link>  
         <Link to="/register" className="btn btn-sm btn-outline">  
           Registrarse  
-        </Link>   */}
+        </Link>  
       </div>  
     </div>  
   );  
