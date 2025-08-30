@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";  
-import { registerSitterRequest, loginSitterRequest/* , verifySitterTokenRequest */ } from "../api/user.auth";  
+import { registerSitterRequest, loginSitterRequest, verifySitterTokenRequest } from "../api/user.auth";  
   
 export const SitterContext = createContext();  
   
@@ -20,8 +20,8 @@ export const SitterProvider = ({ children }) => {
   const signup = async (sitterData) => {  
     try {  
       const res = await registerSitterRequest(sitterData);  
-     /*  const token = res.data;  
-      localStorage.setItem("sitter_token", token);   */
+      const token = res.data;  
+      localStorage.setItem("sitter_token", token);  
       setSitter(res.data);  
       setIsAuthenticatedSitter(true);  
     } catch (error) {  
@@ -32,9 +32,9 @@ export const SitterProvider = ({ children }) => {
   const signin = async (sitterData) => {  
     try {  
       const res = await loginSitterRequest(sitterData);  
-     /*  const token = res.data;  
+      const token = res.data;  
       localStorage.setItem("sitter_token", token);  
-      const resSitter = await verifySitterTokenRequest({ token });  */ 
+      const resSitter = await verifySitterTokenRequest({ token });  
       setSitter(resSitter);  
       setIsAuthenticatedSitter(true);  
     } catch (error) {  
@@ -46,12 +46,12 @@ export const SitterProvider = ({ children }) => {
   };  
   
   const logout = () => {  
-   /*  localStorage.removeItem("sitter_token");   */
+    localStorage.removeItem("sitter_token");  
     setSitter(null);  
     setIsAuthenticatedSitter(false);  
   };  
   
-/*   // Verificación de token automática  
+  // Verificación de token automática  
   useEffect(() => {  
     async function checkLogin() {  
       const token = localStorage.getItem("sitter_token");  
@@ -78,7 +78,7 @@ export const SitterProvider = ({ children }) => {
       }  
     }  
     checkLogin();  
-  }, []);   */
+  }, []);  
   
   return (  
     <SitterContext.Provider value={{  

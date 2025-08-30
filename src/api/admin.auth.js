@@ -9,11 +9,11 @@ export const unblockUserRequest = (userId) => axios.put(`/admin/users/${userId}/
 
 export const registerAdminRequest = (admin) => axios.post(`/admin/register`, admin);  
 export const loginAdminRequest = (admin) => axios.post(`/admin/login`, admin);  
-/* export const verifyAdminTokenRequest = async (data) => {  
+export const verifyAdminTokenRequest = async (data) => {  
   try {  
     const res = await axios.post("/admin/verify", data);  
     return res.data;  
   } catch (error) {  
     throw error;  
   }  
-}; */
+};

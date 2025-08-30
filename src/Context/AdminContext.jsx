@@ -6,8 +6,8 @@ import {
     blockUserRequest,
     unblockUserRequest,
     registerAdminRequest,
-    loginAdminRequest /*,
-    verifyAdminTokenRequest */
+    loginAdminRequest ,
+    verifyAdminTokenRequest
 } from "../api/admin.auth";
 
 export const AdminContext = createContext();
@@ -88,8 +88,8 @@ export const AdminProvider = ({ children }) => {
     const signup = async (adminData) => {
         try {
             const res = await registerAdminRequest(adminData);
-           /*  const token = res.data;
-            localStorage.setItem("admin_token", token); */
+            const token = res.data;
+            localStorage.setItem("admin_token", token);
             setAdmin(res.data);
             setIsAuthenticatedAdmin(true);
         } catch (error) {
@@ -103,9 +103,9 @@ export const AdminProvider = ({ children }) => {
     const signin = async (adminData) => {
         try {
             const res = await loginAdminRequest(adminData);
-            /* const token = res.data;
+            const token = res.data;
             localStorage.setItem("admin_token", token);
-            const resAdmin = await verifyAdminTokenRequest({ token }); */
+            const resAdmin = await verifyAdminTokenRequest({ token });
             setAdmin(resAdmin);
             setIsAuthenticatedAdmin(true);
         } catch (error) {
@@ -117,8 +117,8 @@ export const AdminProvider = ({ children }) => {
     };
 
     const logout = () => {
-/*         localStorage.removeItem("admin_token");
- */        setAdmin(null);
+        localStorage.removeItem("admin_token");
+        setAdmin(null);
         setIsAuthenticatedAdmin(false);
     };
 
