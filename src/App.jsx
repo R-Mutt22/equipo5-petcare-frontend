@@ -8,6 +8,7 @@ import { Homepage } from "./Views/Homepage";
 import { RegisterPage } from "./Views/RegisterPage";
 import { LoginPage } from "./Views/LoginPage";
 import { ServicesListPage } from "./Views/ServicesListPage";
+import { ServiceFormPage } from "./Views/ServiceFormPage";
 import { Navbar } from "./Componentes/Wrappers/Navbar"
 import { Footer } from "./Componentes/Wrappers/Footer"
 import { AdminLoginPage } from "./Views/AdminLoginPage";
@@ -25,6 +26,7 @@ export const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route element={<ProtectedRouteSitter />}>
             <Route path="/services-list" element={<ServicesListPage />} />
+            <Route path="/services-form" element={<ServiceFormPage />} />
           </Route>
           <Route path="/admin" element={<AdminLoginPage />} />
 
