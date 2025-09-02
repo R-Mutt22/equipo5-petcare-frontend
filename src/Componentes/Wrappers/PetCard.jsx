@@ -6,7 +6,7 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
           <p className="font-medium text-gray-800 text-lg">  
             {pet.name}  
           </p>  
-          <p className="font-medium text-gray-600">TIPO: {pet.type}</p>  
+          <p className="font-medium text-gray-600">TIPO: {pet.species}</p>  
           <p className="font-medium text-gray-600">RAZA: {pet.breed}</p>  
           <p className="font-medium text-gray-600">EDAD: {pet.age} años</p>  
           <p className="font-medium text-gray-600">DUEÑO ID: {pet.id_user}</p>  
