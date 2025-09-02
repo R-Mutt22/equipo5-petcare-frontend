@@ -7,6 +7,7 @@ import { ProtectedRouteSitter } from "./Routes/ProtectedRouteSitter";
 import { Homepage } from "./Views/Homepage";
 import { RegisterPage } from "./Views/RegisterPage";
 import { LoginPage } from "./Views/LoginPage";
+import { ServicesListPage } from "./Views/ServicesListPage";
 import { Navbar } from "./Componentes/Wrappers/Navbar"
 import { Footer } from "./Componentes/Wrappers/Footer"
 import { AdminLoginPage } from "./Views/AdminLoginPage";
@@ -22,6 +23,9 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRouteSitter />}>
+            <Route path="/services-list" element={<ServicesListPage />} />
+          </Route>
           <Route path="/admin" element={<AdminLoginPage />} />
 
           {/* Rutas privadas */}
