@@ -8,7 +8,7 @@ import { EmptyState } from "../Componentes/UI/EmptyState";
 const mockPets = [
   {
     id_pet: 1,
-    name: "Pepe",
+    name: "Maximo",
     species: "Perro",
     breed: "Chihuahua",
     age: 1,
