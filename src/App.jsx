@@ -11,6 +11,8 @@ import { Navbar } from "./Componentes/Wrappers/Navbar";
 import { Footer } from "./Componentes/Wrappers/Footer";
 import { AdminLoginPage } from "./Views/AdminLoginPage";
 import { PetsListPage } from "./Views/PetsListPage";
+import { RegisterPetPage } from "./Views/RegisterPetPage";
+import { EditPetPage } from "./Views/EditPetPage";
 
 export const App = () => {
   return (
@@ -23,9 +25,10 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route element={<ProtectedRouteOwner />}>
-            <Route path="/pets-list" element={<PetsListPage />} />
-          </Route>
+          <Route element={<ProtectedRouteOwner />}></Route>
+          <Route path="/pets-list" element={<PetsListPage />} />
+          <Route path="/pets-list/register-pet" element={<RegisterPetPage />} />
+          <Route path="/pets-list/edit-pet/:id_pet" element={<EditPetPage />} />
           <Route path="/admin" element={<AdminLoginPage />} />
 
           {/* Rutas privadas */}
