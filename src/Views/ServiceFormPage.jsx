@@ -6,6 +6,7 @@ import { Select } from '../Componentes/UI/Select';
 import { Button } from '../Componentes/UI/Button';
 import { ErrorMessage } from '../Componentes/UI/ErrorMessage';
 import { Card } from '../Componentes/UI/Card';
+import { useServices } from '../Context/ServiceContext';
 
 const serviceTypes = [
   { value: 'walking', label: 'Paseo' },
@@ -21,6 +22,7 @@ const serviceValidationSchema = Yup.object().shape({
 });
 
 export const ServiceFormPage = () => {
+  const { addService } = useServices();
   const formik = useFormik({
     initialValues: {
       type: '',
@@ -28,10 +30,14 @@ export const ServiceFormPage = () => {
       rate: '',
     },
     validationSchema: serviceValidationSchema,
-    onSubmit: (values) => {
-      // Mock: mostrar datos en consola
-      console.log('Servicio guardado:', values);
-      alert('Servicio guardado (mock)');
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await addService(values);
+        alert('Servicio guardado correctamente');
+        resetForm();
+      } catch (error) {
+        alert('Error al guardar el servicio');
+      }
     },
   });
 
