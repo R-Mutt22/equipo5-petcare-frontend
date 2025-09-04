@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Componentes/UI/Button";
 import { PetCard } from "../Componentes/Wrappers/PetCard";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
@@ -35,9 +35,10 @@ const mockPets = [
   },
 ];
 
-function ListAllPets() {
+export const PetsListPage = () => {
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -46,17 +47,23 @@ function ListAllPets() {
     }, 1200);
   }, []);
 
+  const onEdit = (pet) => {
+    console.log("Editar mascota: ", pet);
+
+    navigate(`/pets-list/edit-pet/${pet.id_pet}`);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-2xl font-semibold text-green-700 mb-6">
-        RegisterPet
+        Lista de mascotas
       </h1>
       {loading ? (
         <LoadingSpinner size="lg" />
       ) : pets.length === 0 ? (
         <>
           <Button variant="success" className="mb-10">
-            <Link to="/my-pets/add-pet">Agregar</Link>
+            <Link to="/pets-list/register-pet">Agregar</Link>
           </Button>
           <EmptyState
             title="No hay mascotas"
@@ -67,17 +74,15 @@ function ListAllPets() {
       ) : (
         <>
           <Button variant="success" className="mb-10">
-            <Link to="/my-pets/add-pet">Agregar</Link>
+            <Link to="/pets-list/register-pet">Agregar</Link>
           </Button>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
             {pets.map((pet) => (
-              <PetCard key={pet.id_pet} pet={pet} />
+              <PetCard key={pet.id_pet} pet={pet} onEdit={onEdit} />
             ))}
           </div>
         </>
       )}
     </div>
   );
-}
-
-export default ListAllPets;
+};
