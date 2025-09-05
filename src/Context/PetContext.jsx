@@ -1,78 +1,91 @@
-import { createContext, useContext, useState } from "react";  
-import {   
-  getPetsByOwnerRequest,   
-  createPetRequest,   
-  updatePetRequest,   
-  deletePetRequest,  
-  getPetRequest   
-} from "../api/pets.auth";  
-  
-const PetContext = createContext();  
-  
-export const usePets = () => {  
-  const context = useContext(PetContext);  
-  if (!context) {  
-    throw new Error("usePets must be used within a PetProvider");  
-  }  
-  return context;  
-};  
-  
-export const PetProvider = ({ children }) => {  
-  const [pets, setPets] = useState([]);  
-  
-  const getPetsByOwner = async (ownerId) => {  
-    try {  
-      const res = await getPetsByOwnerRequest(ownerId);  
-      setPets(res.data);  
-    } catch (error) {  
-      console.error("Error fetching pets:", error);  
-    }  
-  };  
-  
-  const createPet = async (pet) => {  
-    try {  
-      const res = await createPetRequest(pet);  
-      setPets([...pets, res.data]);  
-    } catch (error) {  
-      console.error("Error creating pet:", error);  
-    }  
-  };  
-  
-  const updatePet = async (id, pet) => {  
-    try {  
-      const res = await updatePetRequest(id, pet);  
-      if (res.status === 200) {  
-        setPets(prevPets =>   
-          prevPets.map(prevPet =>   
-            prevPet._id === id ? pet : prevPet  
-          )  
-        );  
-      }  
-    } catch (error) {  
-      console.error("Error updating pet:", error);  
-    }  
-  };  
-  
-  const deletePet = async (id) => {  
-    try {  
-      const res = await deletePetRequest(id);  
-      if (res.status === 200) {  
-        setPets(pets.filter(pet => pet._id !== id));  
-      }  
-    } catch (error) {  
-      console.error("Error deleting pet:", error);  
-    }  
-  };  
-  
-  return (  
-    <PetContext.Provider value={{  
-      pets,  
-      getPetsByOwner,  
-      createPet,  
-      updatePet,  
-      deletePet  
-    }}>  
-      {children}  
-    </PetContext.Provider>  
-  );  
+import { createContext, useContext, useState } from "react";
+import {
+  createPet,
+  getPetsByOwner,
+  getPetById,
+  updatePet,
+  deletePet,
+} from "../api/pets.api";
+
+const PetContext = createContext();
+
+export const usePets = () => {
+  const context = useContext(PetContext);
+  if (!context) {
+    throw new Error("usePets must be used within a PetProvider");
+  }
+  return context;
+};
+
+export const PetProvider = ({ children }) => {
+  const [pets, setPets] = useState([]);
+
+  const fetchGetPetsByOwner = async (ownerId) => {
+    try {
+      const res = await getPetsByOwner(ownerId);
+      setPets(res.data);
+      return res;
+    } catch (error) {
+      console.error("Error fetching pets:", error);
+      throw error;
+    }
+  };
+
+  const fetchGetPetById = async (id) => {
+    try {
+      const res = await getPetById(id);
+      setPets(res.data);
+      return res;
+    } catch (error) {
+      console.error("Error fetching pets:", error);
+      throw error;
+    }
+  };
+
+  const addPet = async (pet) => {
+    try {
+      const newPet = await createPet(pet);
+      setPets([...pets, newPet]);
+      return newPet;
+    } catch (error) {
+      console.error("Error creating pet:", error);
+      throw error;
+    }
+  };
+
+  const editPet = async (id, pet) => {
+    try {
+      const petToEdit = await updatePet(id, pet);
+      setPets(pets.map((pet) => (pet._id === id ? petToEdit : pet)));
+      return petToEdit;
+    } catch (error) {
+      console.error("Error updating pet:", error);
+      throw error;
+    }
+  };
+
+  const removePet = async (id) => {
+    try {
+      await deletePet(id);
+      setPets(pets.filter((pet) => pet._id !== id));
+    } catch (error) {
+      console.error("Error deleting pet:", error);
+      throw error;
+    }
+  };
+
+  return (
+    <PetContext.Provider
+      value={{
+        pets,
+        fetchGetPetsByOwner,
+        fetchGetPetById,
+        addPet,
+        editPet,
+        removePet,
+      }}
+    >
+      {children}
+    </PetContext.Provider>
+  );
 };

@@ -5,8 +5,14 @@ import { Button } from "../Componentes/UI/Button";
 import { useFormik } from "formik";
 import { petValidationSchema } from "../utils/validationSchemas";
 import { ErrorMessage } from "../Componentes/UI/ErrorMessage";
+import { usePets } from "../Context/PetContext";
+import { useParams } from "react-router-dom";
 
 export const EditPetPage = () => {
+  const { editPet } = usePets();
+
+  const { id } = useParams();
+
   const initialValues = {
     name: "",
     species: "",
@@ -16,9 +22,13 @@ export const EditPetPage = () => {
     id_user: 0,
   };
 
-  const onSubmit = (pet) => {
-    console.log("Mascota actualizada: ", pet);
-    alert("Mascota actualizada (prueba)");
+  const onSubmit = async (pet) => {
+    try {
+      await editPet(id, pet);
+      alert("Mascota actualizada (prueba)");
+    } catch (error) {
+      alert("Ocurrió un problema al actualizar una mascota");
+    }
   };
 
   const formik = useFormik({
@@ -40,10 +50,10 @@ export const EditPetPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             message={formik.errors.name}
             touched={formik.touched.name}
-          />
+          /> */}
 
           <Input
             type="text"
@@ -54,10 +64,10 @@ export const EditPetPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             message={formik.errors.species}
             touched={formik.touched.species}
-          />
+          /> */}
 
           <Input
             type="text"
@@ -68,10 +78,10 @@ export const EditPetPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             message={formik.errors.breed}
             touched={formik.touched.breed}
-          />
+          /> */}
 
           <Input
             type="number"
@@ -82,10 +92,10 @@ export const EditPetPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             message={formik.errors.age}
             touched={formik.touched.age}
-          />
+          /> */}
 
           <Input
             type="text"
@@ -96,10 +106,10 @@ export const EditPetPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             message={formik.errors.special_notes}
             touched={formik.touched.special_notes}
-          />
+          /> */}
 
           <Input
             type="number"
@@ -110,10 +120,10 @@ export const EditPetPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             message={formik.errors.id_user}
             touched={formik.touched.id_user}
-          />
+          /> */}
 
           <Button
             type="submit"
