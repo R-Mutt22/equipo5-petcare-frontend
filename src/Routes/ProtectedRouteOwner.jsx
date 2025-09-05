@@ -1,24 +1,25 @@
-import React from 'react';
-import {Navigate, Outlet} from 'react-router-dom';
-
-//Simulacion de usuario Owner autenticado y su rol
-const user = {
-  isAuthenticated: true, //Para negar el acceso se cambia a false
-  role: 'owner',         //Para negar el acceso se cambia a otro rol
-}
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useOwner } from "../Context/OwnerContext";
 
 export const ProtectedRouteOwner = () => {
+  const { isAuthenticatedOwner, owner, loadingOwner } = useOwner();
 
-  if (!user.isAuthenticated) {
-    //Se redirige al login si no está autenticado
-    return <Navigate to="/login" replace />
+  if (loadingOwner) {
+    return <div className="text-center mt-10">Cargando página...</div>;
   }
-  if (user.role !== 'owner') {
-    //Se muestra un aviso sobre acceso denegado si no es dueño
-    return <div className="text-center text-red-500 mt-10">Acceso denegado: solo dueños pueden ver esta página.</div>;
+
+  if (!isAuthenticatedOwner) {
+    return <Navigate to="/login" replace />;
   }
-  //Se muestra la ruta protegita si es dueño autenticado
-  return (
-    <div>ProtectedRouteOwner</div>
-  )
-}
+
+  if (!owner || owner.role !== "owner") {
+    return (
+      <div className="text-center text-red-500 mt-10">
+        Acceso denegado: solo los dueños pueden ver esta página.
+      </div>
+    );
+  }
+
+  return <div>ProtectedRouteOwner</div>;
+};
