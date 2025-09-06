@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { serviceValidationSchema } from '../utils/validationSchemas';
 import { Input } from '../Componentes/UI/Input';
 import { Select } from '../Componentes/UI/Select';
 import { Button } from '../Componentes/UI/Button';
@@ -15,11 +15,6 @@ const serviceTypes = [
   { value: 'visiting', label: 'Visita' },
 ];
 
-const serviceValidationSchema = Yup.object().shape({
-  type: Yup.string().required('El tipo de servicio es requerido'),
-  description: Yup.string().max(100, 'Máximo 100 caracteres'),
-  rate: Yup.number().min(0, 'La tarifa debe ser positiva').required('La tarifa es requerida'),
-});
 
 export const ServiceFormPage = () => {
   const { addService } = useServices();
@@ -28,6 +23,7 @@ export const ServiceFormPage = () => {
       type: '',
       description: '',
       rate: '',
+      id_user: '', // Si es necesario según el schema
     },
     validationSchema: serviceValidationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -45,6 +41,7 @@ export const ServiceFormPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-[#eef1f6]">
       <Card title="Agregar/Editar Servicio" className="w-full max-w-md shadow-lg">
         <form onSubmit={formik.handleSubmit} className="space-y-4">
+
           <Select
             label="Tipo de servicio"
             name="type"
@@ -52,6 +49,8 @@ export const ServiceFormPage = () => {
             value={formik.values.type}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            error={formik.touched.type && formik.errors.type}
+            required
           />
           <ErrorMessage error={formik.errors.type} touched={formik.touched.type} />
 
@@ -62,6 +61,8 @@ export const ServiceFormPage = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             maxLength={100}
+            error={formik.touched.description && formik.errors.description}
+            required
           />
           <ErrorMessage error={formik.errors.description} touched={formik.touched.description} />
 
@@ -72,6 +73,8 @@ export const ServiceFormPage = () => {
             value={formik.values.rate}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            error={formik.touched.rate && formik.errors.rate}
+            required
           />
           <ErrorMessage error={formik.errors.rate} touched={formik.touched.rate} />
 
