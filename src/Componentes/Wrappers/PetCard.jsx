@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 
 export const PetCard = ({ pet, onEdit, onDelete }) => {
+  const petId = pet.id_pet || pet.id;
+
   return (
-    <div className="bg-white p-4 rounded-lg my-2 shadow-md">
+    <div className="bg-white p-4 rounded-lg my-2 shadow-md w-80">
       <header className="flex justify-between">
         <div>
           <p className="font-medium text-gray-800 text-lg">{pet.name}</p>
@@ -16,7 +18,7 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
             Editar
           </button>
           <button
-            onClick={() => onDelete(pet.id_pet)}
+            onClick={() => onDelete(petId)}
             className="btn btn-sm btn-error"
           >
             Eliminar

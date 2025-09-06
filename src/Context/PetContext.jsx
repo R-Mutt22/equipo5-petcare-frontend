@@ -34,7 +34,6 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetById = async (id) => {
     try {
       const res = await getPetById(id);
-      setPets(res.data);
       return res;
     } catch (error) {
       console.error("Error fetching pets:", error);
@@ -56,7 +55,7 @@ export const PetProvider = ({ children }) => {
   const editPet = async (id, pet) => {
     try {
       const petToEdit = await updatePet(id, pet);
-      setPets(pets.map((pet) => (pet._id === id ? petToEdit : pet)));
+      setPets(pets.map((pet) => (pet.id === id ? petToEdit : pet)));
       return petToEdit;
     } catch (error) {
       console.error("Error updating pet:", error);
@@ -67,7 +66,7 @@ export const PetProvider = ({ children }) => {
   const removePet = async (id) => {
     try {
       await deletePet(id);
-      setPets(pets.filter((pet) => pet._id !== id));
+      setPets(pets.filter((pet) => pet.id !== id));
     } catch (error) {
       console.error("Error deleting pet:", error);
       throw error;

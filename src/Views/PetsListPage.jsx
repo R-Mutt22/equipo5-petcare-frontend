@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../Componentes/UI/Button";
 import { PetCard } from "../Componentes/Wrappers/PetCard";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
@@ -42,13 +42,23 @@ export const PetsListPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchGetPetsByOwner(pets.id_user);
+    const loadPets = async () => {
+      try {
+        const ownerId = 1;
+        await fetchGetPetsByOwner(ownerId);
+      } catch (error) {
+        console.log("Error al cargar las mascotas");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPets();
   }, []);
 
   const handleOnEdit = (pet) => {
     console.log("Editar mascota: ", pet);
 
-    navigate(`/pets-list/edit-pet/${pet.id_pet}`);
+    navigate(`/pets-list/pet-edit/${pet.id_pet || pet.id}`);
   };
 
   const handleOnDelete = async (id) => {
@@ -67,7 +77,7 @@ export const PetsListPage = () => {
       ) : pets.length === 0 ? (
         <>
           <Button variant="success" className="mb-10">
-            <Link to="/pets-list/register-pet">Agregar</Link>
+            <Link to="/pets-list/pet-register">Agregar</Link>
           </Button>
           <EmptyState
             title="No hay mascotas"
@@ -78,7 +88,7 @@ export const PetsListPage = () => {
       ) : (
         <>
           <Button variant="success" className="mb-10">
-            <Link to="/pets-list/register-pet">Agregar</Link>
+            <Link to="/pets-list/pet-register">Agregar</Link>
           </Button>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
             {pets.map((pet) => (
@@ -86,7 +96,7 @@ export const PetsListPage = () => {
                 key={pet._id || pet.id_pet}
                 pet={pet}
                 onEdit={handleOnEdit}
-                onDelete={handleOnDelete}
+                onDelete={() => handleOnDelete(pet.id_pet || pet.id)}
               />
             ))}
           </div>
