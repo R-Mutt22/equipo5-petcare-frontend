@@ -33,6 +33,7 @@ export const App = () => {
           <Route element={<ProtectedRouteSitter />}>
             <Route path="/services-list" element={<ServicesListPage />} />
             <Route path="/services-form" element={<ServiceFormPage />} />
+          </Route>
 
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
