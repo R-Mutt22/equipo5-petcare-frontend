@@ -11,7 +11,7 @@ export const getPetsByOwner = async (ownerId) => {
 };
 
 //Obtiene una mascota por el id
-export const getPetById = async () => {
+export const getPetById = async (id) => {
   return await axios.get(`/pets/${id}`);
 };
 
