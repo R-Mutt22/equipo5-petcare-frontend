@@ -7,11 +7,16 @@ import { ProtectedRouteSitter } from "./Routes/ProtectedRouteSitter";
 import { Homepage } from "./Views/Homepage";
 import { RegisterPage } from "./Views/RegisterPage";
 import { LoginPage } from "./Views/LoginPage";
+
 import { ServicesListPage } from "./Views/ServicesListPage";
 import { ServiceFormPage } from "./Views/ServiceFormPage";
 import { Navbar } from "./Componentes/Wrappers/Navbar"
 import { Footer } from "./Componentes/Wrappers/Footer"
+
 import { AdminLoginPage } from "./Views/AdminLoginPage";
+import { PetsListPage } from "./Views/PetsListPage";
+import { PetRegisterPage } from "./Views/PetRegisterPage";
+import { PetEditPage } from "./Views/PetEditPage";
 
 export const App = () => {
   return (
@@ -24,33 +29,39 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+
           <Route element={<ProtectedRouteSitter />}>
             <Route path="/services-list" element={<ServicesListPage />} />
             <Route path="/services-form" element={<ServiceFormPage />} />
+
+          <Route element={<ProtectedRouteOwner />}>
+            <Route path="/pets-list" element={<PetsListPage />} />
+            <Route path="/pets-list/pet-register" element={<PetRegisterPage />} />
+            <Route path="/pets-list/pet-edit/:id_pet" element={<PetEditPage />} />
           </Route>
           <Route path="/admin" element={<AdminLoginPage />} />
 
           {/* Rutas privadas */}
-            {/* Rutas protegidas para dueños */}  
+          {/* Rutas protegidas para dueños */}
           {/* <Route element={<ProtectedRouteOwner />}>  
             <Route path="/my-pets" element={<PetManagement />} />  
             <Route path="/my-bookings" element={<BookingManagement />} />  
             <Route path="/create-booking" element={<CreateBooking />} />  
-          </Route>  */} 
-            
-          {/* Rutas protegidas para niñeras */}  
+          </Route>  */}
+
+          {/* Rutas protegidas para niñeras */}
           {/* <Route element={<ProtectedRouteSitter />}>  
             <Route path="/my-services" element={<ServiceManagement />} />  
             <Route path="/sitter-bookings" element={<SitterBookings />} />  
           </Route>   */}
-            
-          {/* Rutas protegidas para administradores */}  
+
+          {/* Rutas protegidas para administradores */}
           {/* <Route element={<ProtectedRouteAdmin />}>  
             <Route path="/admin" element={<AdminPanel />} />  
             <Route path="/admin/users" element={<UserManagement />} />  
             <Route path="/admin/services" element={<ServiceManagement />} />  
             <Route path="/admin/bookings" element={<BookingManagement />} />  
-          </Route>  */} 
+          </Route>  */}
         </Routes>
         <Footer />
       </BrowserRouter>
