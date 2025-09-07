@@ -7,8 +7,12 @@ import { ProtectedRouteSitter } from "./Routes/ProtectedRouteSitter";
 import { Homepage } from "./Views/Homepage";
 import { RegisterPage } from "./Views/RegisterPage";
 import { LoginPage } from "./Views/LoginPage";
-import { Navbar } from "./Componentes/Wrappers/Navbar";
-import { Footer } from "./Componentes/Wrappers/Footer";
+
+import { ServicesListPage } from "./Views/ServicesListPage";
+import { ServiceFormPage } from "./Views/ServiceFormPage";
+import { Navbar } from "./Componentes/Wrappers/Navbar"
+import { Footer } from "./Componentes/Wrappers/Footer"
+
 import { AdminLoginPage } from "./Views/AdminLoginPage";
 import { PetsListPage } from "./Views/PetsListPage";
 import { PetRegisterPage } from "./Views/PetRegisterPage";
@@ -25,6 +29,11 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          <Route element={<ProtectedRouteSitter />}>
+            <Route path="/services-list" element={<ServicesListPage />} />
+            <Route path="/services-form" element={<ServiceFormPage />} />
+
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
             <Route path="/pets-list/pet-register" element={<PetRegisterPage />} />
