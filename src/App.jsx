@@ -25,10 +25,11 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route element={<ProtectedRouteOwner />}></Route>
-          <Route path="/pets-list" element={<PetsListPage />} />
-          <Route path="/pets-list/pet-register" element={<PetRegisterPage />} />
-          <Route path="/pets-list/pet-edit/:id_pet" element={<PetEditPage />} />
+          <Route element={<ProtectedRouteOwner />}>
+            <Route path="/pets-list" element={<PetsListPage />} />
+            <Route path="/pets-list/pet-register" element={<PetRegisterPage />} />
+            <Route path="/pets-list/pet-edit/:id_pet" element={<PetEditPage />} />
+          </Route>
           <Route path="/admin" element={<AdminLoginPage />} />
 
           {/* Rutas privadas */}
