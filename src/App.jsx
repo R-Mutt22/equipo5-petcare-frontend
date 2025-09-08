@@ -13,6 +13,7 @@ import { AdminLoginPage } from "./Views/AdminLoginPage";
 import { PetsListPage } from "./Views/PetsListPage";
 import { PetRegisterPage } from "./Views/PetRegisterPage";
 import { PetEditPage } from "./Views/PetEditPage";
+import { SearchServicesPage } from "./Views/SearchServicesPage";
 
 export const App = () => {
   return (
@@ -25,10 +26,17 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
-            <Route path="/pets-list/register-pet" element={<PetRegisterPage />} />
-            <Route path="/pets-list/edit-pet/:id_pet" element={<PetEditPage />} />
+            <Route
+              path="/pets-list/register-pet"
+              element={<PetRegisterPage />}
+            />
+            <Route
+              path="/pets-list/edit-pet/:id_pet"
+              element={<PetEditPage />}
+            />
           </Route>
           <Route path="/admin" element={<AdminLoginPage />} />
 
@@ -38,6 +46,8 @@ export const App = () => {
             <Route path="/my-pets" element={<PetManagement />} />  
             <Route path="/my-bookings" element={<BookingManagement />} />  
             <Route path="/create-booking" element={<CreateBooking />} />  
+            <Route path="/service" element={<SearchServicesPage />} />
+
           </Route>  */}
 
           {/* Rutas protegidas para niñeras */}
