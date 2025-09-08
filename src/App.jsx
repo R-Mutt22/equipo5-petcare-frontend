@@ -14,7 +14,9 @@ import { PetsListPage } from "./Views/PetsListPage";
 import { PetRegisterPage } from "./Views/PetRegisterPage";
 import { PetEditPage } from "./Views/PetEditPage";
 import { SearchServicesPage } from "./Views/SearchServicesPage";
-
+import { AboutUs } from "./Views/AboutUs";
+import { ServicePage } from "./Views/ServicePage";
+import { ContactPage } from "./Views/ContactPage";
 export const App = () => {
   return (
     <AppProviders>
@@ -26,6 +28,9 @@ export const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/services" element={<ServicePage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
