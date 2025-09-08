@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -8,6 +10,12 @@ export default {
         ts: "#6d81c8",
         hb: "#407C87",
         c: "#D3E1E2",
+      },
+      fontFamily: {
+        
+        sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+       
+        serif: ['Lora', ...defaultTheme.fontFamily.serif],
       },
     },
   },
