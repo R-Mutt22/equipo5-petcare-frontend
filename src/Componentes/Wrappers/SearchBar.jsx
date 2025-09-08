@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+useState
 export const SearchBar = ({   
   onSearch,   
   searchType = "users", // "users", "pets", "services", "bookings"  
