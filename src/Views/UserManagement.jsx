@@ -2,36 +2,37 @@ import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { SearchBar } from "../Componentes/Wrappers/SearchBar";
 import { EmptyState } from "../Componentes/UI/EmptyState";
+import { getUsers } from "../api/user.api";
 
-const mockUsers = [
-  {
-    id_user: 101,
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    role: "OWNER",
-    phone: "6461237980",
-    active: "Activo",
-    createdAt: "2025-08-06",
-  },
-  {
-    id_user: 102,
-    name: "Pedro Pérez",
-    email: "pedro.perez@gmail.com",
-    role: "OWNER",
-    phone: "6461590264",
-    active: "Inactivo",
-    createdAt: "2025-07-12",
-  },
-  {
-    id_user: 103,
-    name: "Carlos López",
-    email: "carlos.lopez@gmail.com",
-    role: "SITTER",
-    phone: "6461983065",
-    active: "Activo",
-    createdAt: "2025-05-23",
-  },
-];
+// const mockUsers = [
+//   {
+//     id_user: 101,
+//     name: "John Doe",
+//     email: "john.doe@gmail.com",
+//     role: "OWNER",
+//     phone: "6461237980",
+//     status: true,
+//     createdAt: "2025-08-06",
+//   },
+//   {
+//     id_user: 102,
+//     name: "Pedro Pérez",
+//     email: "pedro.perez@gmail.com",
+//     role: "OWNER",
+//     phone: "6461590264",
+//     status: false,
+//     createdAt: "2025-07-12",
+//   },
+//   {
+//     id_user: 103,
+//     name: "Carlos López",
+//     email: "carlos.lopez@gmail.com",
+//     role: "SITTER",
+//     phone: "6461983065",
+//     status: true,
+//     createdAt: "2025-05-23",
+//   },
+// ];
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -39,15 +40,23 @@ export const UserManagement = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setUsers(mockUsers);
-      setAllUsers(mockUsers);
-      setLoading(false);
-    }, 1200);
+    const getAllUsers = async () => {
+      try {
+        const res = await getUsers();
+        setUsers(res.data);
+        setAllUsers(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        setLoading(false);
+      }
+    };
+
+    getAllUsers();
   }, []);
 
-  const handleOnSearch = (searchTerm, role, state) => {
-    if (!searchTerm && !role && !state) {
+  const handleOnSearch = (searchTerm, role, status) => {
+    if (!searchTerm && !role && !status) {
       setUsers(allUsers);
       return;
     }
@@ -62,8 +71,9 @@ export const UserManagement = () => {
       );
     }
 
-    if (state) {
-      filterUser = filterUser.filter((user) => user.state === state);
+    if (status) {
+      const statusBool = status === "Activo";
+      filterUser = filterUser.filter((user) => user.status === statusBool);
     }
 
     if (role) {
@@ -85,13 +95,21 @@ export const UserManagement = () => {
             <span>Cargando datos de usuarios...</span>
           </div>
         </div>
+      ) : allUsers.length === 0 ? (
+        <>
+          <EmptyState
+            title="No hay usuarios registrados"
+            description="Aún no existen usuarios en la plataforma"
+            icon="⚠️"
+          />
+        </>
       ) : users.length === 0 ? (
         <>
           <SearchBar onSearch={handleOnSearch} searchType="users" />
           <EmptyState
             title="Sin resultados"
-            description="No hay usuarios registrados"
-            icon="⚠️"
+            description="No se encontraron usuarios con los filtros aplicados"
+            icon="🔍"
           />
         </>
       ) : (
@@ -118,8 +136,8 @@ export const UserManagement = () => {
                   <td>{user.email}</td>
                   <td>{user.role}</td>
                   <td>{user.phone}</td>
-                  <td>{user.active}</td>
-                  <td>{user.createdAt}</td>
+                  <td>{user.status ? "Activo" : "Inactivo"}</td>
+                  <td>{new Date(user.createdAt).toLocaleDateString}</td>
                   <td className="flex items-center justify-center gap-2">
                     <button className="btn btn-sm btn-primary">
                       Habilitar

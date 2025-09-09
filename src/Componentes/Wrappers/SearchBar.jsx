@@ -8,7 +8,7 @@ export const SearchBar = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [role, setRole] = useState("");
-  const [state, setState] = useState("");
+  const [status, setStatus] = useState("");
 
   const getPlaceholder = () => {
     switch (searchType) {
@@ -25,14 +25,13 @@ export const SearchBar = ({
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchTerm, role, status);
+  };
+
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSearch(searchTerm, role, state);
-      }}
-      className={`flex gap-2 ${className}`}
-    >
+    <form onSubmit={handleSubmit} className={`flex gap-2 ${className}`}>
       <input
         type="text"
         value={searchTerm}
@@ -42,11 +41,11 @@ export const SearchBar = ({
       />
 
       <select
-        value={state}
-        onChange={(e) => setState(e.target.value)}
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
         className="input input-bordered"
       >
-        <option value="">Todos</option>
+        <option value="">Todos los estados</option>
         <option value="Activo">Activo</option>
         <option value="Inactivo">Inactivo</option>
       </select>
@@ -56,7 +55,7 @@ export const SearchBar = ({
         onChange={(e) => setRole(e.target.value)}
         className="input input-bordered"
       >
-        <option value="">Todos</option>
+        <option value="">Todos los roles</option>
         <option value="OWNER">OWNER</option>
         <option value="SITTER">SITTER</option>
       </select>
