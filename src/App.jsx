@@ -17,6 +17,7 @@ import { SearchServicesPage } from "./Views/SearchServicesPage";
 import { AboutUs } from "./Views/AboutUs";
 import { ServicePage } from "./Views/ServicePage";
 import { ContactPage } from "./Views/ContactPage";
+import { CreateBookingPage } from "./Views/CreateBookingPage";
 export const App = () => {
   return (
     <AppProviders>
@@ -31,6 +32,7 @@ export const App = () => {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<ServicePage />} />
           <Route path="/contact" element={<ContactPage />} />
+          
 
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
@@ -50,8 +52,8 @@ export const App = () => {
           {/* <Route element={<ProtectedRouteOwner />}>  
             <Route path="/my-pets" element={<PetManagement />} />  
             <Route path="/my-bookings" element={<BookingManagement />} />  
-            <Route path="/create-booking" element={<CreateBooking />} />  
             <Route path="/service" element={<SearchServicesPage />} />
+            <Route path="/create-booking" element={<CreateBookingPage />} /> 
 
           </Route>  */}
 
