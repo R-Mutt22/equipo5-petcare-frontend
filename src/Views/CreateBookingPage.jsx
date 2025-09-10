@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useFormik } from "formik";
 import { Card } from "../Componentes/UI/Card";
 import { Select } from "../Componentes/UI/Select";
@@ -24,6 +26,7 @@ const mockOwner = { id: 1, name: "Juan Pérez" };
 
 export const CreateBookingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Agregar esta línea
 
   const formik = useFormik({
     initialValues: {
@@ -66,14 +69,15 @@ export const CreateBookingPage = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         setIsLoading(true);
-        console.log("Datos de la reserva:", values);
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        alert("Reserva creada exitosamente");
-        resetForm();
+        // En lugar de crear la reserva directamente, navegar a la página de pago
+        navigate("/payment", {
+          state: {
+            bookingData: values,
+          },
+        });
       } catch (error) {
-        alert("Error al crear la reserva");
+        alert("Error al procesar la reserva");
       } finally {
         setIsLoading(false);
       }
@@ -87,44 +91,52 @@ export const CreateBookingPage = () => {
   const serviceType = selectedService?.type;
 
   // Calcular precio total con validación de duración
-  useEffect(() => {  
-  if (selectedService && formik.values.start_date && formik.values.end_date) {  
-    const startTime = new Date(formik.values.start_date);  
-    const endTime = new Date(formik.values.end_date);  
-      
-    // Validar horario laboral (6:00 - 21:00)  
-    const startHour = startTime.getHours();  
-    const endHour = endTime.getHours();  
-      
-    if (startHour < 6 || startHour > 21 || endHour < 6 || endHour > 21) {  
-      formik.setFieldError('start_date', 'Las reservas solo están disponibles de 6:00 a 21:00 hs');  
-      formik.setFieldValue('total_price', 0);  
-      return;  
-    }  
-  
-    if (endTime > startTime) {  
-      let calculatedPrice = 0;  
-        
-      if (serviceType === "Paseo" || serviceType === "Visita") {  
-        const hours = Math.ceil((endTime - startTime) / (1000 * 60 * 60));  
-        calculatedPrice = selectedService.rate * hours;  
-      } else if (serviceType === "Hospedaje") {  
-        const days = Math.ceil((endTime - startTime) / (1000 * 60 * 60 * 24));  
-        calculatedPrice = selectedService.rate * days;  
-      } else if (serviceType === "Cuidado Diario") {  
-        const days = Math.ceil((endTime - startTime) / (1000 * 60 * 60 * 24));  
-        calculatedPrice = selectedService.rate * days;  
-      }  
-        
-      formik.setFieldValue("total_price", calculatedPrice);  
-      formik.setFieldError("start_date", "");  
-    } else {  
-      formik.setFieldValue("total_price", 0);  
-    }  
-  } else {  
-    formik.setFieldValue("total_price", 0);  
-  }  
-}, [formik.values.id_service, formik.values.start_date, formik.values.end_date, serviceType]);
+  useEffect(() => {
+    if (selectedService && formik.values.start_date && formik.values.end_date) {
+      const startTime = new Date(formik.values.start_date);
+      const endTime = new Date(formik.values.end_date);
+
+      // Validar horario laboral (6:00 - 21:00)
+      const startHour = startTime.getHours();
+      const endHour = endTime.getHours();
+
+      if (startHour < 6 || startHour > 21 || endHour < 6 || endHour > 21) {
+        formik.setFieldError(
+          "start_date",
+          "Las reservas solo están disponibles de 6:00 a 21:00 hs"
+        );
+        formik.setFieldValue("total_price", 0);
+        return;
+      }
+
+      if (endTime > startTime) {
+        let calculatedPrice = 0;
+
+        if (serviceType === "Paseo" || serviceType === "Visita") {
+          const hours = Math.ceil((endTime - startTime) / (1000 * 60 * 60));
+          calculatedPrice = selectedService.rate * hours;
+        } else if (serviceType === "Hospedaje") {
+          const days = Math.ceil((endTime - startTime) / (1000 * 60 * 60 * 24));
+          calculatedPrice = selectedService.rate * days;
+        } else if (serviceType === "Cuidado Diario") {
+          const days = Math.ceil((endTime - startTime) / (1000 * 60 * 60 * 24));
+          calculatedPrice = selectedService.rate * days;
+        }
+
+        formik.setFieldValue("total_price", calculatedPrice);
+        formik.setFieldError("start_date", "");
+      } else {
+        formik.setFieldValue("total_price", 0);
+      }
+    } else {
+      formik.setFieldValue("total_price", 0);
+    }
+  }, [
+    formik.values.id_service,
+    formik.values.start_date,
+    formik.values.end_date,
+    serviceType,
+  ]);
 
   // Configuración específica del DatePicker según tipo de servicio
   const getDatePickerConfig = (isEndDate = false) => {
@@ -374,7 +386,7 @@ export const CreateBookingPage = () => {
             className="w-full"
             disabled={isLoading || !isFormValid}
           >
-            {isLoading ? "Creando..." : "Crear Reserva"}
+            {isLoading ? "Procesando..." : "Proceder al Pago"}
           </Button>
 
           {!isFormValid && (
