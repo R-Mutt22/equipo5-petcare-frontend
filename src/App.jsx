@@ -20,6 +20,7 @@ import { PetEditPage } from "./Views/PetEditPage";
 import { AdminPanel } from "./Views/AdminPanel";
 import { UserManagement } from "./Views/UserManagement";
 import { ServiceManagement } from "./Views/ServiceManagement";
+import { BookingManagement } from "./Views/BookingManagement";
 
 export const App = () => {
   return (
@@ -53,6 +54,7 @@ export const App = () => {
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/services" element={<ServiceManagement />} />
+          <Route path="/admin/bookings" element={<BookingManagement />} />
 
           {/* Rutas privadas */}
           {/* Rutas protegidas para dueños */}

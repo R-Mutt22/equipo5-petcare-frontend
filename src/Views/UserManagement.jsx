@@ -47,7 +47,7 @@ export const UserManagement = () => {
         setAllUsers(res.data);
         setLoading(false);
       } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
+        console.error("Error al obtener los usuarios: ", error);
         setLoading(false);
       }
     };
