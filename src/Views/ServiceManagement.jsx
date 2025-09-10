@@ -3,42 +3,45 @@ import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { useServices } from "../Context/ServiceContext";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 
-const mockServices = [
-  {
-    id_service: 1,
-    type: "Paseo",
-    description: "Paseo de mascotas por el parque",
-    rate: 1500,
-    id_user: 101,
-  },
-  {
-    id_service: 2,
-    type: "Hospedaje",
-    description: "Hospedaje de mascotas por noche",
-    rate: 5000,
-    id_user: 101,
-  },
-  {
-    id_service: 3,
-    type: "Cuidado Diario",
-    description: "Cuidado de mascotas durante el día",
-    rate: 2500,
-    id_user: 101,
-  },
-];
+// const mockServices = [
+//   {
+//     id_service: 1,
+//     type: "Paseo",
+//     description: "Paseo de mascotas por el parque",
+//     rate: 1500,
+//     id_user: 101,
+//   },
+//   {
+//     id_service: 2,
+//     type: "Hospedaje",
+//     description: "Hospedaje de mascotas por noche",
+//     rate: 5000,
+//     id_user: 101,
+//   },
+//   {
+//     id_service: 3,
+//     type: "Cuidado Diario",
+//     description: "Cuidado de mascotas durante el día",
+//     rate: 2500,
+//     id_user: 101,
+//   },
+// ];
 
 export const ServiceManagement = () => {
   const { services, fetchServices } = useServices();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      fetchServices();
-    } catch (error) {
-      console.log("Error al cargar los servicios");
-    } finally {
-      setLoading(false);
-    }
+    const getAllServices = async () => {
+      try {
+        await fetchServices();
+      } catch (error) {
+        console.log("Error al cargar los servicios: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getAllServices();
   }, []);
 
   return (
