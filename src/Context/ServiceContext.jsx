@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from "react";  
-import {   
-  getServicesBySitterRequest,  
-  createServiceRequest,  
-  updateServiceRequest,  
-  deleteServiceRequest,  
-  getAvailableServicesRequest  
-} from "../api/services.auth";  
+import { 
+  getServices, 
+  getServiceById, 
+  createService, 
+  updateService, 
+  deleteService 
+} from "../api/services.api";
   
 const ServiceContext = createContext();  
   
@@ -18,73 +18,73 @@ export const useServices = () => {
 };  
   
 export const ServiceProvider = ({ children }) => {  
-  const [services, setServices] = useState([]);  
-  
-  const getServicesBySitter = async (sitterId) => {  
-    try {  
-      const res = await getServicesBySitterRequest(sitterId);  
-      setServices(res.data);  
-    } catch (error) {  
-      console.error("Error fetching sitter services:", error);  
-    }  
-  };  
-  
-  const getAvailableServices = async () => {  
-    try {  
-      const res = await getAvailableServicesRequest();  
-      setServices(res.data);  
-    } catch (error) {  
-      console.error("Error fetching available services:", error);  
-    }  
-  };  
-  
-  const createService = async (service) => {  
-    try {  
-      const res = await createServiceRequest(service);  
-      setServices([...services, res.data]);  
-      return res.data;  
-    } catch (error) {  
-      console.error("Error creating service:", error);  
-      throw error;  
-    }  
-  };  
-  
-  const updateService = async (id, service) => {  
-    try {  
-      const res = await updateServiceRequest(id, service);  
-      if (res.status === 200) {  
-        setServices(prevServices =>   
-          prevServices.map(prevService =>   
-            prevService._id === id ? service : prevService  
-          )  
-        );  
-      }  
-    } catch (error) {  
-      console.error("Error updating service:", error);  
-    }  
-  };  
-  
-  const deleteService = async (id) => {  
-    try {  
-      const res = await deleteServiceRequest(id);  
-      if (res.status === 200) {  
-        setServices(services.filter(service => service._id !== id));  
-      }  
-    } catch (error) {  
-      console.error("Error deleting service:", error);  
-    }  
-  };  
-  
-  return (  
-    <ServiceContext.Provider value={{  
-      services,  
-      getServicesBySitter,  
-      getAvailableServices,  
-      createService,  
-      updateService,  
-      deleteService  
-    }}>  
-      {children}  
-    </ServiceContext.Provider>  
-  );  
-};
+  const [services, setServices] = useState([]);
+
+  // Obtener todos los servicios
+  const fetchServices = async () => {
+    try {
+      const data = await getServices();
+      setServices(data);
+    } catch (error) {
+      console.error("Error al obtener servicios:", error);
+    }
+  };
+
+  // Obtener un servicio por ID
+  const fetchServiceById = async (id) => {
+    try {
+      return await getServiceById(id);
+    } catch (error) {
+      console.error("Error al obtener servicio:", error);
+      throw error;
+    }
+  };
+
+  // Crear servicio
+  const addService = async (serviceData) => {
+    try {
+      const newService = await createService(serviceData);
+      setServices([...services, newService]);
+      return newService;
+    } catch (error) {
+      console.error("Error al crear servicio:", error);
+      throw error;
+    }
+  };
+
+  // Actualizar servicio
+  const editService = async (id, serviceData) => {
+    try {
+      const updated = await updateService(id, serviceData);
+      setServices(services.map(s => s._id === id ? updated : s));
+      return updated;
+    } catch (error) {
+      console.error("Error al actualizar servicio:", error);
+      throw error;
+    }
+  };
+
+  // Eliminar servicio
+  const removeService = async (id) => {
+    try {
+      await deleteService(id);
+      setServices(services.filter(s => s._id !== id));
+    } catch (error) {
+      console.error("Error al eliminar servicio:", error);
+      throw error;
+    }
+  };
+
+  return (
+    <ServiceContext.Provider value={{
+      services,
+      fetchServices,
+      fetchServiceById,
+      addService,
+      editService,
+      removeService
+    }}>
+      {children}
+    </ServiceContext.Provider>
+  );
+}
