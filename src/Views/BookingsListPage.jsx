@@ -63,7 +63,7 @@ export const BookingsListPage = () => {
 
   const handleCancelBooking = async (bookingId) => {
     if (window.confirm("¿Estás seguro de que quieres cancelar esta reserva?")) {
-      await cancelBooking(bookingId);
+       await cancelBooking(bookingId);
     }
   };
 
