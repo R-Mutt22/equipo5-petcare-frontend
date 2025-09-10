@@ -18,6 +18,7 @@ import { AboutUs } from "./Views/AboutUs";
 import { ServicePage } from "./Views/ServicePage";
 import { ContactPage } from "./Views/ContactPage";
 import { CreateBookingPage } from "./Views/CreateBookingPage";
+import { BookingsListPage } from "./Views/BookingsListPage";
 export const App = () => {
   return (
     <AppProviders>
@@ -51,7 +52,8 @@ export const App = () => {
           {/* Rutas protegidas para dueños */}
           {/* <Route element={<ProtectedRouteOwner />}>  
             <Route path="/my-pets" element={<PetManagement />} />  
-            <Route path="/my-bookings" element={<BookingManagement />} />  
+            <Route path="/my-bookings" element={<BookingsListPage />} />
+
             <Route path="/service" element={<SearchServicesPage />} />
             <Route path="/create-booking" element={<CreateBookingPage />} /> 
 
