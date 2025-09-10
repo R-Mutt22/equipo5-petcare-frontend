@@ -42,6 +42,11 @@ export const App = () => {
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/payment-failure" element={<PaymentFailurePage />} />
 
+          <Route element={<ProtectedRouteSitter />}>
+            <Route path="/services-list" element={<ServicesListPage />} />
+            <Route path="/services-form" element={<ServiceFormPage />} />
+          </Route>
+
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
             <Route
