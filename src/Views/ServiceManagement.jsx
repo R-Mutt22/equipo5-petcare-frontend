@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
+import { useServices } from "../Context/ServiceContext";
+import { EmptyState } from "../Componentes/UI/EmptyState";
 
 const mockServices = [
   {
@@ -26,14 +28,17 @@ const mockServices = [
 ];
 
 export const ServiceManagement = () => {
-  const [services, setServices] = useState([]);
+  const { services, fetchServices } = useServices();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setServices(mockServices);
+    try {
+      fetchServices();
+    } catch (error) {
+      console.log("Error al cargar los servicios");
+    } finally {
       setLoading(false);
-    }, 1200);
+    }
   }, []);
 
   return (
