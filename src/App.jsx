@@ -19,6 +19,10 @@ import { ServicePage } from "./Views/ServicePage";
 import { ContactPage } from "./Views/ContactPage";
 import { CreateBookingPage } from "./Views/CreateBookingPage";
 import { BookingsListPage } from "./Views/BookingsListPage";
+import { PaymentPage } from "./Views/PaymentPage";
+import { PaymentSuccessPage } from "./Views/PaymentSuccessPage";
+import { PaymentFailurePage } from "./Views/PaymentFailurePage";
+
 export const App = () => {
   return (
     <AppProviders>
@@ -33,7 +37,10 @@ export const App = () => {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<ServicePage />} />
           <Route path="/contact" element={<ContactPage />} />
-          
+          <Route path="/create-booking" element={<CreateBookingPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
+          <Route path="/payment-failure" element={<PaymentFailurePage />} />
 
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
@@ -55,7 +62,6 @@ export const App = () => {
             <Route path="/my-bookings" element={<BookingsListPage />} />
 
             <Route path="/service" element={<SearchServicesPage />} />
-            <Route path="/create-booking" element={<CreateBookingPage />} /> 
 
           </Route>  */}
 
