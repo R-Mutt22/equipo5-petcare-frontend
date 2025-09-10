@@ -24,8 +24,8 @@ export const BookingProvider = ({ children }) => {
 
   const getAllBookings = async () => {
     try {
-      const data = getBookings();
-      setBookings(data);
+      const res = await getBookings();
+      setBookings(res.data);
     } catch (error) {
       console.log("Error al obtener bookings: ", error);
     }

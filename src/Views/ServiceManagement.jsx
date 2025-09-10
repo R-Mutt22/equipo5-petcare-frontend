@@ -32,13 +32,16 @@ export const ServiceManagement = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      fetchServices();
-    } catch (error) {
-      console.log("Error al cargar los servicios: ", error);
-    } finally {
-      setLoading(false);
-    }
+    const getAllServices = async () => {
+      try {
+        await fetchServices();
+      } catch (error) {
+        console.log("Error al cargar los servicios: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getAllServices();
   }, []);
 
   return (

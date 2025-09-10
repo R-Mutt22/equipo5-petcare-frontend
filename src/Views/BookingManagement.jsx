@@ -1,52 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { EmptyState } from "../Componentes/UI/EmptyState";
+import { useBookings } from "../Context/BookingContext";
 
-const mockBookings = [
-  {
-    id_booking: 1,
-    id_pet: 1,
-    id_service: 1,
-    id_user: 1,
-    start_time: "2025-09-06T13:30",
-    end_time: "2025-09-06T14:30",
-    status: "Activo",
-    special_request: "Pasear por el parque",
-    total_price: 1500,
-  },
-  {
-    id_booking: 2,
-    id_pet: 2,
-    id_service: 2,
-    id_user: 1,
-    start_time: "2025-09-07T15:30",
-    end_time: "2025-09-07T16:30",
-    status: "Inactivo",
-    special_request: "Cuidar en la casa",
-    total_price: 5000,
-  },
-  {
-    id_booking: 3,
-    id_pet: 3,
-    id_service: 3,
-    id_user: 1,
-    start_time: "2025-09-08T12:30",
-    end_time: "2025-09-08T13:30",
-    status: "Activo",
-    special_request: "Cuidar, alimentar y bañar en la casa",
-    total_price: 2500,
-  },
-];
+// const mockBookings = [
+//   {
+//     id_booking: 1,
+//     id_pet: 1,
+//     id_service: 1,
+//     id_user: 1,
+//     start_time: "2025-09-06T13:30",
+//     end_time: "2025-09-06T14:30",
+//     status: "Activo",
+//     special_request: "Pasear por el parque",
+//     total_price: 1500,
+//   },
+//   {
+//     id_booking: 2,
+//     id_pet: 2,
+//     id_service: 2,
+//     id_user: 1,
+//     start_time: "2025-09-07T15:30",
+//     end_time: "2025-09-07T16:30",
+//     status: "Inactivo",
+//     special_request: "Cuidar en la casa",
+//     total_price: 5000,
+//   },
+//   {
+//     id_booking: 3,
+//     id_pet: 3,
+//     id_service: 3,
+//     id_user: 1,
+//     start_time: "2025-09-08T12:30",
+//     end_time: "2025-09-08T13:30",
+//     status: "Activo",
+//     special_request: "Cuidar, alimentar y bañar en la casa",
+//     total_price: 2500,
+//   },
+// ];
 
 export const BookingManagement = () => {
-  const [bookings, setBookings] = useState([]);
+  const { bookings, getAllBookings } = useBookings();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setBookings(mockBookings);
-      setLoading(false);
-    }, 1200);
+    const fetchBookings = async () => {
+      try {
+        await getAllBookings();
+      } catch (error) {
+        console.log("Error al obtener las reservas: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBookings();
   }, []);
 
   return (
