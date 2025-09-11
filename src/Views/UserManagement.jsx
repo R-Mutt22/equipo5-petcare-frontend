@@ -2,37 +2,36 @@ import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { SearchBar } from "../Componentes/Wrappers/SearchBar";
 import { EmptyState } from "../Componentes/UI/EmptyState";
-import { getUsers } from "../api/user.api";
 
-// const mockUsers = [
-//   {
-//     id_user: 101,
-//     name: "John Doe",
-//     email: "john.doe@gmail.com",
-//     role: "OWNER",
-//     phone: "6461237980",
-//     status: true,
-//     createdAt: "2025-08-06",
-//   },
-//   {
-//     id_user: 102,
-//     name: "Pedro Pérez",
-//     email: "pedro.perez@gmail.com",
-//     role: "OWNER",
-//     phone: "6461590264",
-//     status: false,
-//     createdAt: "2025-07-12",
-//   },
-//   {
-//     id_user: 103,
-//     name: "Carlos López",
-//     email: "carlos.lopez@gmail.com",
-//     role: "SITTER",
-//     phone: "6461983065",
-//     status: true,
-//     createdAt: "2025-05-23",
-//   },
-// ];
+const mockUsers = [
+  {
+    id_user: 101,
+    name: "John Doe",
+    email: "john.doe@gmail.com",
+    role: "OWNER",
+    phone: "6461237980",
+    status: true,
+    createdAt: "2025-08-06",
+  },
+  {
+    id_user: 102,
+    name: "Pedro Pérez",
+    email: "pedro.perez@gmail.com",
+    role: "OWNER",
+    phone: "6461590264",
+    status: false,
+    createdAt: "2025-07-12",
+  },
+  {
+    id_user: 103,
+    name: "Carlos López",
+    email: "carlos.lopez@gmail.com",
+    role: "SITTER",
+    phone: "6461983065",
+    status: true,
+    createdAt: "2025-05-23",
+  },
+];
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -40,19 +39,11 @@ export const UserManagement = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getAllUsers = async () => {
-      try {
-        const res = await getUsers();
-        setUsers(res.data);
-        setAllUsers(res.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error al obtener los usuarios: ", error);
-        setLoading(false);
-      }
-    };
-
-    getAllUsers();
+    setTimeout(() => {
+      setUsers(mockUsers);
+      setAllUsers(mockUsers);
+      setLoading(false);
+    }, 1200);
   }, []);
 
   const handleOnSearch = (searchTerm, role, status) => {
@@ -81,6 +72,32 @@ export const UserManagement = () => {
     }
 
     setUsers(filterUser);
+  };
+
+  const handleEnable = (id) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id_user === id ? { ...user, status: true } : user
+      )
+    );
+    setAllUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id_user === id ? { ...user, status: true } : user
+      )
+    );
+  };
+
+  const handleDisable = (id) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id_user === id ? { ...user, status: false } : user
+      )
+    );
+    setAllUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id_user === id ? { ...user, status: false } : user
+      )
+    );
   };
 
   return (
@@ -136,14 +153,20 @@ export const UserManagement = () => {
                   <td>{user.email}</td>
                   <td>{user.role}</td>
                   <td>{user.phone}</td>
-                  <td>{user.status ? "Activo" : "Inactivo"}</td>
-                  <td>{new Date(user.createdAt).toLocaleDateString}</td>
+                  <td>{user.status ? "Activo" : "Bloqueado"}</td>
+                  <td>{user.createdAt}</td>
                   <td className="flex items-center justify-center gap-2">
-                    <button className="btn btn-sm btn-primary">
-                      Habilitar
+                    <button
+                      onClick={() => handleEnable(user.id_user)}
+                      className="btn btn-sm btn-primary"
+                    >
+                      Desbloquear
                     </button>
-                    <button className="btn btn-sm btn-error">
-                      Deshabilitar
+                    <button
+                      onClick={() => handleDisable(user.id_user)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Bloquear
                     </button>
                   </td>
                 </tr>
