@@ -51,10 +51,12 @@ export const App = () => {
             />
           </Route>
           <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/admin/users" element={<UserManagement />} />
-          <Route path="/admin/services" element={<ServiceManagement />} />
-          <Route path="/admin/bookings" element={<BookingManagement />} />
+          <Route element={<ProtectedRouteAdmin />}>
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/admin/services" element={<ServiceManagement />} />
+            <Route path="/admin/bookings" element={<BookingManagement />} />
+          </Route>
 
           {/* Rutas privadas */}
           {/* Rutas protegidas para dueños */}
