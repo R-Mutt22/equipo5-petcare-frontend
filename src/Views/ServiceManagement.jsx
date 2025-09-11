@@ -10,6 +10,7 @@ import { EmptyState } from "../Componentes/UI/EmptyState";
 //     description: "Paseo de mascotas por el parque",
 //     rate: 1500,
 //     id_user: 101,
+//     status: true,
 //   },
 //   {
 //     id_service: 2,
@@ -17,6 +18,7 @@ import { EmptyState } from "../Componentes/UI/EmptyState";
 //     description: "Hospedaje de mascotas por noche",
 //     rate: 5000,
 //     id_user: 101,
+//     status: false,
 //   },
 //   {
 //     id_service: 3,
@@ -24,25 +26,38 @@ import { EmptyState } from "../Componentes/UI/EmptyState";
 //     description: "Cuidado de mascotas durante el día",
 //     rate: 2500,
 //     id_user: 101,
+//     status: true,
 //   },
 // ];
 
 export const ServiceManagement = () => {
-  const { services, fetchServices } = useServices();
+  const { services, fetchServices, unlockService, blockService } =
+    useServices();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const getAllServices = async () => {
-      try {
-        await fetchServices();
-      } catch (error) {
-        console.log("Error al cargar los servicios: ", error);
-      } finally {
-        setLoading(false);
-      }
+    const loadServices = async () => {
+      await fetchServices();
+      setLoading(false);
     };
-    getAllServices();
-  }, []);
+    loadServices();
+  }, [fetchServices]);
+
+  const handleEnable = (id) => {
+    setServices((prevServices) =>
+      prevServices.map((service) =>
+        service.id_service === id ? { ...service, status: true } : service
+      )
+    );
+  };
+
+  const handleDisable = (id) => {
+    setServices((prevServices) =>
+      prevServices.map((service) =>
+        service.id_service === id ? { ...service, status: false } : service
+      )
+    );
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -75,7 +90,8 @@ export const ServiceManagement = () => {
                 <th>Descripción</th>
                 <th>Tarifa</th>
                 <th>ID_User</th>
-                <th>Acciones</th>
+                <th>Estado</th>
+                <th className="text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -86,8 +102,20 @@ export const ServiceManagement = () => {
                   <td>{service.description}</td>
                   <td>{service.rate}</td>
                   <td>{service.id_user}</td>
-                  <td>
-                    <button className="btn btn-sm btn-error">Eliminar</button>
+                  <td>{service.status ? "Activo" : "Bloqueado"}</td>
+                  <td className="flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => unlockService(service.id_service)}
+                      className="btn btn-sm btn-primary"
+                    >
+                      Desbloquear
+                    </button>
+                    <button
+                      onClick={() => blockService(service.id_service)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Bloquear
+                    </button>
                   </td>
                 </tr>
               ))}
