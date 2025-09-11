@@ -7,12 +7,22 @@ import { ProtectedRouteSitter } from "./Routes/ProtectedRouteSitter";
 import { Homepage } from "./Views/Homepage";
 import { RegisterPage } from "./Views/RegisterPage";
 import { LoginPage } from "./Views/LoginPage";
+
+import { ServicesListPage } from "./Views/ServicesListPage";
+import { ServiceFormPage } from "./Views/ServiceFormPage";
 import { Navbar } from "./Componentes/Wrappers/Navbar";
 import { Footer } from "./Componentes/Wrappers/Footer";
+
 import { AdminLoginPage } from "./Views/AdminLoginPage";
 import { PetsListPage } from "./Views/PetsListPage";
 import { PetRegisterPage } from "./Views/PetRegisterPage";
 import { PetEditPage } from "./Views/PetEditPage";
+
+import { AdminPanel } from "./Views/AdminPanel";
+import { UserManagement } from "./Views/UserManagement";
+import { ServiceManagement } from "./Views/ServiceManagement";
+import { BookingManagement } from "./Views/BookingManagement";
+
 import { SearchServicesPage } from "./Views/SearchServicesPage";
 import { AboutUs } from "./Views/AboutUs";
 import { ServicePage } from "./Views/ServicePage";
@@ -50,15 +60,21 @@ export const App = () => {
           <Route element={<ProtectedRouteOwner />}>
             <Route path="/pets-list" element={<PetsListPage />} />
             <Route
-              path="/pets-list/register-pet"
+              path="/pets-list/pet-register"
               element={<PetRegisterPage />}
             />
             <Route
-              path="/pets-list/edit-pet/:id_pet"
+              path="/pets-list/pet-edit/:id_pet"
               element={<PetEditPage />}
             />
           </Route>
-          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route element={<ProtectedRouteAdmin />}>
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/admin/services" element={<ServiceManagement />} />
+            <Route path="/admin/bookings" element={<BookingManagement />} />
+          </Route>
 
           {/* Rutas privadas */}
           {/* Rutas protegidas para dueños */}
