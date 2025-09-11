@@ -3,43 +3,45 @@ import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { useServices } from "../Context/ServiceContext";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 
-const mockServices = [
-  {
-    id_service: 1,
-    type: "Paseo",
-    description: "Paseo de mascotas por el parque",
-    rate: 1500,
-    id_user: 101,
-    status: true,
-  },
-  {
-    id_service: 2,
-    type: "Hospedaje",
-    description: "Hospedaje de mascotas por noche",
-    rate: 5000,
-    id_user: 101,
-    status: false,
-  },
-  {
-    id_service: 3,
-    type: "Cuidado Diario",
-    description: "Cuidado de mascotas durante el día",
-    rate: 2500,
-    id_user: 101,
-    status: true,
-  },
-];
+// const mockServices = [
+//   {
+//     id_service: 1,
+//     type: "Paseo",
+//     description: "Paseo de mascotas por el parque",
+//     rate: 1500,
+//     id_user: 101,
+//     status: true,
+//   },
+//   {
+//     id_service: 2,
+//     type: "Hospedaje",
+//     description: "Hospedaje de mascotas por noche",
+//     rate: 5000,
+//     id_user: 101,
+//     status: false,
+//   },
+//   {
+//     id_service: 3,
+//     type: "Cuidado Diario",
+//     description: "Cuidado de mascotas durante el día",
+//     rate: 2500,
+//     id_user: 101,
+//     status: true,
+//   },
+// ];
 
 export const ServiceManagement = () => {
-  const [services, setServices] = useState([]);
+  const { services, fetchServices, unlockService, blockService } =
+    useServices();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setServices(mockServices);
+    const loadServices = async () => {
+      await fetchServices();
       setLoading(false);
-    }, 1200);
-  }, []);
+    };
+    loadServices();
+  }, [fetchServices]);
 
   const handleEnable = (id) => {
     setServices((prevServices) =>
@@ -103,13 +105,13 @@ export const ServiceManagement = () => {
                   <td>{service.status ? "Activo" : "Bloqueado"}</td>
                   <td className="flex items-center justify-center gap-2">
                     <button
-                      onClick={() => handleEnable(service.id_service)}
+                      onClick={() => unlockService(service.id_service)}
                       className="btn btn-sm btn-primary"
                     >
                       Desbloquear
                     </button>
                     <button
-                      onClick={() => handleDisable(service.id_service)}
+                      onClick={() => blockService(service.id_service)}
                       className="btn btn-sm btn-error"
                     >
                       Bloquear

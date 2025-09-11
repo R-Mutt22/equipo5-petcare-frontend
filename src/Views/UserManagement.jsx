@@ -2,36 +2,37 @@ import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { SearchBar } from "../Componentes/Wrappers/SearchBar";
 import { EmptyState } from "../Componentes/UI/EmptyState";
+import { disableUser, enableUser, getUsers } from "../api/user.api";
 
-const mockUsers = [
-  {
-    id_user: 101,
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    role: "OWNER",
-    phone: "6461237980",
-    status: true,
-    createdAt: "2025-08-06",
-  },
-  {
-    id_user: 102,
-    name: "Pedro Pérez",
-    email: "pedro.perez@gmail.com",
-    role: "OWNER",
-    phone: "6461590264",
-    status: false,
-    createdAt: "2025-07-12",
-  },
-  {
-    id_user: 103,
-    name: "Carlos López",
-    email: "carlos.lopez@gmail.com",
-    role: "SITTER",
-    phone: "6461983065",
-    status: true,
-    createdAt: "2025-05-23",
-  },
-];
+// const mockUsers = [
+//   {
+//     id_user: 101,
+//     name: "John Doe",
+//     email: "john.doe@gmail.com",
+//     role: "OWNER",
+//     phone: "6461237980",
+//     status: true,
+//     createdAt: "2025-08-06",
+//   },
+//   {
+//     id_user: 102,
+//     name: "Pedro Pérez",
+//     email: "pedro.perez@gmail.com",
+//     role: "OWNER",
+//     phone: "6461590264",
+//     status: false,
+//     createdAt: "2025-07-12",
+//   },
+//   {
+//     id_user: 103,
+//     name: "Carlos López",
+//     email: "carlos.lopez@gmail.com",
+//     role: "SITTER",
+//     phone: "6461983065",
+//     status: true,
+//     createdAt: "2025-05-23",
+//   },
+// ];
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -39,11 +40,19 @@ export const UserManagement = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setUsers(mockUsers);
-      setAllUsers(mockUsers);
-      setLoading(false);
-    }, 1200);
+    const getAllUsers = async () => {
+      try {
+        const res = await getUsers();
+        setUsers(res.data);
+        setAllUsers(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        setLoading(false);
+      }
+    };
+
+    getAllUsers();
   }, []);
 
   const handleOnSearch = (searchTerm, role, status) => {
@@ -74,30 +83,34 @@ export const UserManagement = () => {
     setUsers(filterUser);
   };
 
-  const handleEnable = (id) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id_user === id ? { ...user, status: true } : user
-      )
-    );
-    setAllUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id_user === id ? { ...user, status: true } : user
-      )
-    );
+  const handleEnable = async (id) => {
+    try {
+      const res = await enableUser(id);
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id_user === id ? res.data : user))
+      );
+      setAllUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id_user === id ? res.data : user))
+      );
+    } catch (error) {
+      console.log("Error al desbloquear usuario: ", error);
+    }
   };
 
-  const handleDisable = (id) => {
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id_user === id ? { ...user, status: false } : user
-      )
-    );
-    setAllUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id_user === id ? { ...user, status: false } : user
-      )
-    );
+  const handleDisable = async (id) => {
+    try {
+      const res = await disableUser(id);
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id_user === id ? res.data : user))
+      );
+      setAllUsers((prevUsers) =>
+        prevUsers.map((user) => (user.id_user === id ? res.data : user))
+      );
+    } catch (error) {
+      console.log("Error al bloquear usuario: ", error);
+    }
   };
 
   return (
