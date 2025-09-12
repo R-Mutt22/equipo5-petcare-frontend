@@ -32,7 +32,7 @@ import { BookingsListPage } from "./Views/BookingsListPage";
 import { PaymentPage } from "./Views/PaymentPage";
 import { PaymentSuccessPage } from "./Views/PaymentSuccessPage";
 import { PaymentFailurePage } from "./Views/PaymentFailurePage";
-
+import { ChatToggle } from "./Componentes/chat/ChatToggle";  
 export const App = () => {
   return (
     <AppProviders>
@@ -101,6 +101,7 @@ export const App = () => {
           </Route>  */}
         </Routes>
         <Footer />
+        <ChatToggle />  
       </BrowserRouter>
     </AppProviders>
   );

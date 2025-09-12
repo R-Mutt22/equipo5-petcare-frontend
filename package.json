@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.12",
     "@headlessui/react": "^1.7.18",
+    "@hookform/resolvers": "^5.2.1",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
@@ -46,7 +47,9 @@
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
     "styled-components": "^6.1.8",
-    "yup": "^1.7.0"
+    "valibot": "^1.1.0",
+    "yup": "^1.7.0",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
