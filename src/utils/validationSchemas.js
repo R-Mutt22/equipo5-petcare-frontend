@@ -71,3 +71,18 @@ export const userValidationSchema = Yup.object().shape({
   ),
   active: Yup.boolean(),
 });
+
+export const contactValidationSchema = Yup.object().shape({  
+  name: Yup.string()  
+    .max(50, "El nombre no debe exceder 50 caracteres")  
+    .required("El nombre es requerido"),  
+  email: Yup.string()  
+    .email("Correo electrónico inválido")  
+    .required("El correo electrónico es requerido"),  
+  subject: Yup.string()  
+    .max(100, "El asunto no debe exceder 100 caracteres")  
+    .required("El asunto es requerido"),  
+  message: Yup.string()  
+    .max(500, "El mensaje no debe exceder 500 caracteres")  
+    .required("El mensaje es requerido"),  
+});
