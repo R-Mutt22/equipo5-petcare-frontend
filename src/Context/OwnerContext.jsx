@@ -20,13 +20,15 @@ export const OwnerProvider = ({ children }) => {
   // Métodos de autenticación siguiendo el patrón de UserContext  
   const signup = async (ownerData) => {  
     try {  
+      setLoadingOwner(true);
       const res = await registerOwnerRequest(ownerData);  
       const token = res.data;  
       localStorage.setItem("token", token);  
       setOwner(res.data);  
       setIsAuthenticatedOwner(true);  
     } catch (error) {  
-      setErrors(error.response.data);  
+      setErrors(error.response.data);
+      setLoadingOwner(false);  
     }  
   };  
   

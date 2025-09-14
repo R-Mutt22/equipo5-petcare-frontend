@@ -19,6 +19,7 @@ export const SitterProvider = ({ children }) => {
   
   const signup = async (sitterData) => {  
     try {  
+      setLoadingSitter(true);
       const res = await registerSitterRequest(sitterData);  
       const token = res.data;  
       localStorage.setItem("sitter_token", token);  
@@ -26,6 +27,7 @@ export const SitterProvider = ({ children }) => {
       setIsAuthenticatedSitter(true);  
     } catch (error) {  
       setErrors(error.response.data);  
+      setLoadingSitter(false);
     }  
   };  
   
