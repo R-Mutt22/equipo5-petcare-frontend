@@ -5,7 +5,7 @@ import { useOwner } from "../Context/OwnerContext";
 export const ProtectedRouteOwner = () => {
   const { isAuthenticatedOwner, owner, loadingOwner } = useOwner();
 
-  if (loadingOwner) {
+  /* if (loadingOwner) {
     return <div className="text-center mt-10">Cargando página...</div>;
   }
 
@@ -19,7 +19,7 @@ export const ProtectedRouteOwner = () => {
         Acceso denegado: solo los dueños pueden ver esta página.
       </div>
     );
-  }
+  } */
 
-  return <div>ProtectedRouteOwner</div>;
+  return <Outlet />;
 };
