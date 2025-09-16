@@ -5,14 +5,14 @@ export const petValidationSchema = Yup.object().shape({
     .max(50, "El nombre no debe exceder 50 caracteres")
     .required("El nombre es requerido"),
   species: Yup.string()
-    .oneOf(["dog", "cat", "bird", "other"], "Tipo de mascota inválido")
+    .oneOf(["DOG", "CAT", "bird", "other"], "Tipo de mascota inválido")
     .required("El tipo es requerido"),
   breed: Yup.string().max(50, "La raza no debe exceder 50 caracteres"),
   age: Yup.number()
     .positive("La edad debe ser positiva")
     .integer("La edad debe ser un número entero"),
-  special_notes: Yup.string(),
-  id_user: Yup.number().required("El ID del usuario es requerido"),
+  specialNotes: Yup.string(),
+  ownerId: Yup.number().required("El ID del usuario es requerido"),
 });
 
 export const serviceValidationSchema = Yup.object().shape({

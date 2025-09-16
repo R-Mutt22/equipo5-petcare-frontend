@@ -23,8 +23,8 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetsByOwner = async (ownerId) => {
     try {
       const res = await getPetsByOwner(ownerId);
+      console.log(res);
       setPets(res.data);
-      return res;
     } catch (error) {
       console.error("Error fetching pets:", error);
       throw error;
@@ -42,6 +42,7 @@ export const PetProvider = ({ children }) => {
   };
 
   const addPet = async (pet) => {
+    console.log(pet);
     try {
       const newPet = await createPet(pet);
       setPets([...pets, newPet]);

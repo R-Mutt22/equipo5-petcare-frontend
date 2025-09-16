@@ -5,6 +5,7 @@ import { PetCard } from "../Componentes/Wrappers/PetCard";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 import { usePets } from "../Context/PetContext";
+import { useOwner } from "../Context/OwnerContext";
 
 // const mockPets = [
 //   {
@@ -38,14 +39,14 @@ import { usePets } from "../Context/PetContext";
 
 export const PetsListPage = () => {
   const { pets, fetchGetPetsByOwner, removePet } = usePets();
+  const {owner} = useOwner();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadPets = async () => {
       try {
-        const ownerId = 1;
-        await fetchGetPetsByOwner(ownerId);
+        await fetchGetPetsByOwner(owner.id);
       } catch (error) {
         console.log("Error al cargar las mascotas");
       } finally {
@@ -58,7 +59,7 @@ export const PetsListPage = () => {
   const handleOnEdit = (pet) => {
     console.log("Editar mascota: ", pet);
 
-    navigate(`/pets-list/pet-edit/${pet.id_pet || pet.id}`);
+    navigate(`/pets-list/pet-edit/${pet.id}`);
   };
 
   const handleOnDelete = async (id) => {
@@ -93,10 +94,10 @@ export const PetsListPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
             {pets.map((pet) => (
               <PetCard
-                key={pet._id || pet.id_pet}
+                key={pet.id}
                 pet={pet}
                 onEdit={handleOnEdit}
-                onDelete={() => handleOnDelete(pet.id_pet || pet.id)}
+                onDelete={() => handleOnDelete(pet.id)}
               />
             ))}
           </div>

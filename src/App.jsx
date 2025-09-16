@@ -58,16 +58,18 @@ export const App = () => {
           </Route>
 
           <Route element={<ProtectedRouteOwner />}>
+          </Route>
+
             <Route path="/pets-list" element={<PetsListPage />} />
             <Route
               path="/pets-list/pet-register"
               element={<PetRegisterPage />}
             />
             <Route
-              path="/pets-list/pet-edit/:id_pet"
+              path="/pets-list/pet-edit/:id"
               element={<PetEditPage />}
             />
-          </Route>
+
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route element={<ProtectedRouteAdmin />}>
             <Route path="/admin" element={<AdminPanel />} />

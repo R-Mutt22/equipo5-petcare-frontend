@@ -7,6 +7,7 @@ import { Card } from '../Componentes/UI/Card';
 import { ErrorMessage } from '../Componentes/UI/ErrorMessage';
 import { useOwner } from '../Context/OwnerContext';
 import { useSitter } from '../Context/SitterContext';
+import { useNavigate } from 'react-router-dom';
 
 const loginValidationSchema = Yup.object().shape({
   email: Yup.string().email('Correo electrónico inválido').required('El correo electrónico es requerido'),
@@ -14,6 +15,7 @@ const loginValidationSchema = Yup.object().shape({
 });
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const { signin: signinOwner, errors: ownerErrors, loadingOwner } = useOwner();
   const { signin: signinSitter, errors: sitterErrors, loadingSitter } = useSitter();
 
@@ -28,6 +30,7 @@ export const LoginPage = () => {
     onSubmit: async (values) => {
       if (userType === 'owner') {
         await signinOwner(values);
+        navigate('/pets-list');
       } else {
         await signinSitter(values);
       }

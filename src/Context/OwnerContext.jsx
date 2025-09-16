@@ -19,24 +19,28 @@ export const OwnerProvider = ({ children }) => {
   
   // Métodos de autenticación siguiendo el patrón de UserContext  
   const signup = async (ownerData) => {  
+    console.log(ownerData);
     try {  
       const res = await registerOwnerRequest(ownerData);  
-      const token = res.data;  
-      localStorage.setItem("token", token);  
+      // const token = res.data;  
+      // localStorage.setItem("token", token);  
+      console.log(res);
       setOwner(res.data);  
       setIsAuthenticatedOwner(true);  
     } catch (error) {  
-      setErrors(error.response.data);  
+      //setErrors(error.response.data);
+      console.log(error);
     }  
   };  
   
   const signin = async (ownerData) => {  
     try {  
       const res = await loginOwnerRequest(ownerData);  
-      const token = res.data;  
-      localStorage.setItem("token", token);  
-      const resOwner = await verifyOwnerTokenRequest({ token });  
-      setOwner(resOwner);  
+      console.log(res);
+      // const token = res.data;  
+      // localStorage.setItem("token", token);  
+      // const resOwner = await verifyOwnerTokenRequest({ token });  
+      setOwner(res.data);  
       setIsAuthenticatedOwner(true);  
     } catch (error) {  
       if (Array.isArray(error.response.data)) {  

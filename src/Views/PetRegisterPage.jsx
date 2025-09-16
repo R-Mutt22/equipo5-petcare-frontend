@@ -19,8 +19,8 @@ export const PetRegisterPage = () => {
       species: "",
       breed: "",
       age: "",
-      special_notes: "",
-      id_user: "",
+      specialNotes: "",
+      ownerId: "",
     },
     validationSchema: petValidationSchema,
     onSubmit: async (values, { resetForm }) => {
@@ -77,8 +77,8 @@ export const PetRegisterPage = () => {
               onChange={formik.handleChange}
             >
               <option value="">Selecciona un tipo/especie</option>
-              <option value="dog">Perro</option>
-              <option value="cat">Gato</option>
+              <option value="DOG">Perro</option>
+              <option value="CAT">Gato</option>
             </select>
           </div>
           <ErrorMessage
@@ -117,9 +117,9 @@ export const PetRegisterPage = () => {
           <Input
             type="text"
             label="Nota"
-            name="special_notes"
+            name="specialNotes"
             placeholder="Introduce información esencial sobre la mascota"
-            value={formik.values.special_notes}
+            value={formik.values.specialNotes}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
@@ -127,15 +127,15 @@ export const PetRegisterPage = () => {
           <Input
             type="number"
             label="Id del dueño"
-            name="id_user"
+            name="ownerId"
             placeholder="Introduce el id del dueño de la mascota"
-            value={formik.values.id_user}
+            value={formik.values.ownerId}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
           <ErrorMessage
-            message={formik.errors.id_user}
-            touched={formik.touched.id_user}
+            message={formik.errors.ownerId}
+            touched={formik.touched.ownerId}
           />
 
           <Button

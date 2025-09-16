@@ -20,6 +20,7 @@ export const RegisterPage = () => {
       role: '',  
       phone: '',  
       address: '',  
+      avatarUser: ''
     },  
     validationSchema: userValidationSchema,  
     onSubmit: async (values) => {  
@@ -30,6 +31,7 @@ export const RegisterPage = () => {
         password: values.password,  
         phone: values.phone,  
         address: values.address,  
+        role: values.role
       };  
   
       if (values.role === 'owner') {  

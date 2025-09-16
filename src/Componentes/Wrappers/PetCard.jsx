@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { useOwner } from "../../Context/OwnerContext";
 
 export const PetCard = ({ pet, onEdit, onDelete }) => {
-  const petId = pet.id_pet || pet.id;
+  const petId = pet.id;
 
   return (
     <div className="bg-white p-4 rounded-lg my-2 shadow-md w-80">
@@ -10,8 +11,7 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
           <p className="font-medium text-gray-800 text-lg">{pet.name}</p>
           <p className="font-medium text-gray-600">TIPO: {pet.species}</p>
           <p className="font-medium text-gray-600">RAZA: {pet.breed}</p>
-          <p className="font-medium text-gray-600">EDAD: {pet.age} años</p>
-          <p className="font-medium text-gray-600">DUEÑO ID: {pet.id_user}</p>
+          <p className="font-medium text-gray-600">EDAD: {pet.age === "" ? 0 : pet.age} años</p>
         </div>
         <div className="flex gap-2">
           <button onClick={() => onEdit(pet)} className="btn btn-sm btn-info">
@@ -27,7 +27,7 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
       </header>
       {pet.special_notes && (
         <p className="font-medium text-gray-600 mt-2">
-          NOTAS: {pet.special_notes}
+          NOTAS: {pet.specialNotes}
         </p>
       )}
     </div>

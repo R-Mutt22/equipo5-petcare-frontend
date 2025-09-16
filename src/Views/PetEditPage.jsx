@@ -12,23 +12,24 @@ import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 export const PetEditPage = () => {
   const { fetchGetPetById, editPet } = usePets();
 
-  const { id_pet } = useParams();
+  const { pets } = usePets();
+
+  const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      name: pets.name,
       species: "",
       breed: "",
       age: 0,
-      special_notes: "",
-      id_user: 0,
+      specialNotes: ""
     },
     validationSchema: petValidationSchema,
     onSubmit: async (values) => {
       try {
-        await editPet(id_pet, values);
+        await editPet(id, values);
         alert("Mascota actualizada correctamente");
       } catch (error) {
         alert("Ocurrió un problema al actualizar una mascota");
@@ -39,7 +40,7 @@ export const PetEditPage = () => {
   useEffect(() => {
     const loadPet = async () => {
       try {
-        const pet = await fetchGetPetById(id_pet);
+        const pet = await fetchGetPetById(id);
         formik.setValues(pet.data);
       } catch (error) {
         console.log("Error al cargar mascota", error);
@@ -48,7 +49,7 @@ export const PetEditPage = () => {
       }
     };
     loadPet();
-  }, [id_pet]);
+  }, [id]);
 
   if (loading) {
     return (
@@ -88,8 +89,8 @@ export const PetEditPage = () => {
               onChange={formik.handleChange}
             >
               <option value="">Selecciona un tipo/especie</option>
-              <option value="dog">Perro</option>
-              <option value="cat">Gato</option>
+              <option value="DOG">Perro</option>
+              <option value="CAT">Gato</option>
             </select>
           </div>
           <ErrorMessage
@@ -128,25 +129,11 @@ export const PetEditPage = () => {
           <Input
             type="text"
             label="Nota"
-            name="special_notes"
+            name="specialNotes"
             placeholder="Introduce información esencial sobre la mascota"
-            value={formik.values.special_notes}
+            value={formik.values.specialNotes}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-          />
-
-          <Input
-            type="number"
-            label="Id del dueño"
-            name="id_user"
-            placeholder="Introduce el id del dueño de la mascota"
-            value={formik.values.id_user}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <ErrorMessage
-            message={formik.errors.id_user}
-            touched={formik.touched.id_user}
           />
 
           <Button
