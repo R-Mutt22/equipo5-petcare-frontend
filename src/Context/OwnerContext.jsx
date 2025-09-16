@@ -43,10 +43,11 @@ export const OwnerProvider = ({ children }) => {
       setLoadingOwner(true); 
       setErrors([]); 
       const res = await loginOwnerRequest(ownerData);
+      console.log(res)
       /* const token = res.data.token;
       localStorage.setItem("token", token);
       const resOwner = await verifyOwnerTokenRequest({ token }); */
-      setOwner(res);
+      setOwner(res.data);
       setIsAuthenticatedOwner(true);
       setLoadingOwner(false); 
     } catch (error) {

@@ -88,10 +88,11 @@ export const SearchServicesPage = () => {
               key={service._id || service.id_service}
               onClick={() => handleServiceSelect(service)}
             >
+              
               <ServiceCard
                 service={service}
-                onEdit={() => {}} // Deshabilitar edición para owners
-                onDelete={() => {}} // Deshabilitar eliminación para owners
+                onEdit={() => {}}
+                onDelete={() => {}}
               />
             </div>
           ))}

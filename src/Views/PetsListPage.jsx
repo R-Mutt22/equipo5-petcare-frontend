@@ -5,6 +5,7 @@ import { PetCard } from "../Componentes/Wrappers/PetCard";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 import { usePets } from "../Context/PetContext";
+import { useOwner } from "../Context/OwnerContext";
 
 // const mockPets = [
 //   {
@@ -37,17 +38,19 @@ import { usePets } from "../Context/PetContext";
 // ];
 
 export const PetsListPage = () => {
+  const { owner } = useOwner();
   const { pets, fetchGetPetsByOwner, removePet } = usePets();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  console.log(owner);
   useEffect(() => {
     const loadPets = async () => {
       try {
-        const ownerId = 1;
-        await fetchGetPetsByOwner(ownerId);
+        mascota = await fetchGetPetsByOwner(owner.id);
+        console.log(mascota);
       } catch (error) {
-        console.log("Error al cargar las mascotas");
+        console.log("Error: ", error);
+                
       } finally {
         setLoading(false);
       }

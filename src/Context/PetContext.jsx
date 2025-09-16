@@ -55,7 +55,7 @@ export const PetProvider = ({ children }) => {
   const editPet = async (id, pet) => {
     try {
       const petToEdit = await updatePet(id, pet);
-      setPets(pets.map((pet) => (pet.id === id ? petToEdit : pet)));
+      setPets(pets.filter((pet) => (pet.id_pet || pet.id) !== id));
       return petToEdit;
     } catch (error) {
       console.error("Error updating pet:", error);

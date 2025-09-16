@@ -1,32 +1,32 @@
 import axios from "./axios";
 
-// Obtener todos los servicios
+// Obtener todos los services
 export const getServices = async () => {
-  const res = await axios.get("/servicios");
+  const res = await axios.get("/services");
   return res.data;
 };
 
 // Obtener un servicio por ID
 export const getServiceById = async (id) => {
-  const res = await axios.get(`/servicios/${id}`);
+  const res = await axios.get(`/services/${id}`);
   return res.data;
 };
 
 // Crear un nuevo servicio
 export const createService = async (serviceData) => {
-  const res = await axios.post("/servicios", serviceData);
+  const res = await axios.post("/services", serviceData);
   return res.data;
 };
 
 // Actualizar un servicio
 export const updateService = async (id, serviceData) => {
-  const res = await axios.put(`/servicios/${id}`, serviceData);
+  const res = await axios.put(`/services/${id}`, serviceData);
   return res.data;
 };
 
 // Eliminar un servicio
 export const deleteService = async (id) => {
-  const res = await axios.delete(`/servicios/${id}`);
+  const res = await axios.delete(`/services/${id}`);
   return res.data;
 };
 
