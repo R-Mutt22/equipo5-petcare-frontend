@@ -2,7 +2,7 @@ import axios from "./axios";
 
 //Obtener todos los usuarios (owners y sitters)
 export const getUsers = async () => {
-  return await axios.get("/users");
+  return await axios.get("/admin/users");
 };
 
 //Desbloquea al usuario por su ID

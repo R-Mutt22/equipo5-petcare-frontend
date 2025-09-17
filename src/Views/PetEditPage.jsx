@@ -3,16 +3,14 @@ import { Card } from "../Componentes/UI/Card";
 import { Input } from "../Componentes/UI/Input";
 import { Button } from "../Componentes/UI/Button";
 import { useFormik } from "formik";
-import { petValidationSchema } from "../utils/validationSchemas";
+import { editPetValidationSchema } from "../utils/validationSchemas";
 import { ErrorMessage } from "../Componentes/UI/ErrorMessage";
 import { usePets } from "../Context/PetContext";
 import { useParams } from "react-router-dom";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 
 export const PetEditPage = () => {
-  const { fetchGetPetById, editPet } = usePets();
-
-  const { pets } = usePets();
+  const { pets, fetchGetPetById, editPet } = usePets();
 
   const { id } = useParams();
 
@@ -20,15 +18,16 @@ export const PetEditPage = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: pets.name,
+      name: "",
       species: "",
       breed: "",
       age: 0,
       specialNotes: ""
     },
-    validationSchema: petValidationSchema,
+    validationSchema: editPetValidationSchema,
     onSubmit: async (values) => {
       try {
+        console.log(values);
         await editPet(id, values);
         alert("Mascota actualizada correctamente");
       } catch (error) {
@@ -49,7 +48,7 @@ export const PetEditPage = () => {
       }
     };
     loadPet();
-  }, [id]);
+  }, [pets.id]);
 
   if (loading) {
     return (

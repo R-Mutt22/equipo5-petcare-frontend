@@ -72,12 +72,14 @@ export const App = () => {
 
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route element={<ProtectedRouteAdmin />}>
+          </Route>
+
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/admin/users" element={<UserManagement />} />
             <Route path="/admin/services" element={<ServiceManagement />} />
             <Route path="/admin/bookings" element={<BookingManagement />} />
-          </Route>
 
+            <Route path="/search-services" element={<SearchServicesPage />} />
           {/* Rutas privadas */}
           {/* Rutas protegidas para dueños */}
           {/* <Route element={<ProtectedRouteOwner />}>  

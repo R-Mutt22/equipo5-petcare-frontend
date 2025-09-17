@@ -23,7 +23,7 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetsByOwner = async (ownerId) => {
     try {
       const res = await getPetsByOwner(ownerId);
-      console.log(res);
+      console.log("Mascotas que devuelve el backend:", res.data);
       setPets(res.data);
     } catch (error) {
       console.error("Error fetching pets:", error);
@@ -44,9 +44,9 @@ export const PetProvider = ({ children }) => {
   const addPet = async (pet) => {
     console.log(pet);
     try {
-      const newPet = await createPet(pet);
-      setPets([...pets, newPet]);
-      return newPet;
+      const res = await createPet(pet);
+      setPets([...pets, res.data]);
+      return res.data;
     } catch (error) {
       console.error("Error creating pet:", error);
       throw error;
@@ -55,9 +55,10 @@ export const PetProvider = ({ children }) => {
 
   const editPet = async (id, pet) => {
     try {
-      const petToEdit = await updatePet(id, pet);
-      setPets(pets.map((pet) => (pet.id === id ? petToEdit : pet)));
-      return petToEdit;
+      console.log("Soy editPet con información!!");
+      const res = await updatePet(id, pet);
+      setPets(pets.map((pet) => (pet.id === id ? res.data : pet)));
+      return res.data;
     } catch (error) {
       console.error("Error updating pet:", error);
       throw error;

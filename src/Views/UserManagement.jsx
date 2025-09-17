@@ -43,8 +43,9 @@ export const UserManagement = () => {
     const getAllUsers = async () => {
       try {
         const res = await getUsers();
-        setUsers(res.data);
-        setAllUsers(res.data);
+        console.log(res.data);
+        setUsers(res.data.content);
+        setAllUsers(res.data.content);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener los usuarios:", error);
@@ -160,8 +161,8 @@ export const UserManagement = () => {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id_user}>
-                  <td>{user.id_user}</td>
+                <tr key={user.id}>
+                  <td>{user.id}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.role}</td>

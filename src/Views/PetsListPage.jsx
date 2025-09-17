@@ -7,36 +7,6 @@ import { EmptyState } from "../Componentes/UI/EmptyState";
 import { usePets } from "../Context/PetContext";
 import { useOwner } from "../Context/OwnerContext";
 
-// const mockPets = [
-//   {
-//     id_pet: 1,
-//     name: "Maximo",
-//     species: "Perro",
-//     breed: "Chihuahua",
-//     age: 1,
-//     id_user: 1,
-//     special_notes: "Muy amistoso",
-//   },
-//   {
-//     id_pet: 2,
-//     name: "Firulais",
-//     species: "Perro",
-//     breed: "Golden Retreiver",
-//     age: 2,
-//     id_user: 1,
-//     special_notes: "Muy adorable",
-//   },
-//   {
-//     id_pet: 3,
-//     name: "Zeus",
-//     species: "Perro",
-//     breed: "Doberman",
-//     age: 2,
-//     id_user: 3,
-//     special_notes: "Muy molestoso",
-//   },
-// ];
-
 export const PetsListPage = () => {
   const { pets, fetchGetPetsByOwner, removePet } = usePets();
   const {owner} = useOwner();
@@ -47,6 +17,7 @@ export const PetsListPage = () => {
     const loadPets = async () => {
       try {
         await fetchGetPetsByOwner(owner.id);
+        console.log("Mascotas cargadas:", pets);
       } catch (error) {
         console.log("Error al cargar las mascotas");
       } finally {
@@ -56,10 +27,10 @@ export const PetsListPage = () => {
     loadPets();
   }, []);
 
-  const handleOnEdit = (pet) => {
-    console.log("Editar mascota: ", pet);
+  const handleOnEdit = (pets) => {
+    console.log("Editar mascota: ", pets);
 
-    navigate(`/pets-list/pet-edit/${pet.id}`);
+    navigate(`/pets-list/pet-edit/${pets.id}`);
   };
 
   const handleOnDelete = async (id) => {
@@ -96,7 +67,7 @@ export const PetsListPage = () => {
               <PetCard
                 key={pet.id}
                 pet={pet}
-                onEdit={handleOnEdit}
+                onEdit={() => handleOnEdit(pet)}
                 onDelete={() => handleOnDelete(pet.id)}
               />
             ))}

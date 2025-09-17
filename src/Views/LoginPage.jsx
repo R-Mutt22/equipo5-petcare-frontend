@@ -33,6 +33,7 @@ export const LoginPage = () => {
         navigate('/pets-list');
       } else {
         await signinSitter(values);
+        navigate("/services-list");
       }
     },
   });

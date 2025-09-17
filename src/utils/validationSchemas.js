@@ -15,6 +15,20 @@ export const petValidationSchema = Yup.object().shape({
   ownerId: Yup.number().required("El ID del usuario es requerido"),
 });
 
+export const editPetValidationSchema = Yup.object().shape({
+    name: Yup.string()
+      .max(50, "El nombre no debe exceder 50 caracteres")
+      .required("El nombre es requerido"),
+    species: Yup.string()
+      .oneOf(["DOG", "CAT", "bird", "other"], "Tipo de mascota inválido")
+      .required("El tipo es requerido"),
+    breed: Yup.string().max(50, "La raza no debe exceder 50 caracteres"),
+    age: Yup.number()
+      .positive("La edad debe ser positiva")
+      .integer("La edad debe ser un número entero"),
+    specialNotes: Yup.string(),
+  });
+
 export const serviceValidationSchema = Yup.object().shape({
   type: Yup.string()
     .oneOf(
