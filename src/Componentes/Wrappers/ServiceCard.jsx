@@ -7,7 +7,7 @@ export const ServiceCard = ({ service, onEdit, onDelete }) => {
             {service.type}  
           </p>  
           <p className="font-medium text-gray-600">TARIFA: ${service.rate}</p>  
-          <p className="font-medium text-gray-600">SITTER ID: {service.id_user}</p>  
+          <p className="font-medium text-gray-600">SITTER ID: {service.owners.name}</p>  
         </div>  
         <div className="flex gap-2">  
           <button   

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 import { useBookings } from "../Context/BookingContext";
+import { useNavigate } from "react-router-dom";
 
 // const mockBookings = [
 //   {
@@ -40,8 +41,9 @@ import { useBookings } from "../Context/BookingContext";
 // ];
 
 export const BookingManagement = () => {
-  const { bookings, getAllBookings } = useBookings();
+  const { bookings, getAllBookings, fetchCancelBooking } = useBookings();
   const [loading, setLoading] = useState(true);
+  const {navigate} = useNavigate();
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -55,6 +57,12 @@ export const BookingManagement = () => {
     };
     fetchBookings();
   }, []);
+
+  const handleOnDelete = async (id) => {
+    if (window.confirm("¿Estás seguro de eliminar esta reserva?")) {
+      await fetchCancelBooking(id);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
@@ -88,26 +96,26 @@ export const BookingManagement = () => {
                 <th>Estado</th>
                 <th>Petición especial</th>
                 <th>Precio total</th>
-                <th>ID_Pet</th>
-                <th>ID_Service</th>
-                <th>ID_User</th>
+                <th>Nombre de la Mascota</th>
+                <th>Tipo de Servicio</th>
+                <th>Nombre de Usuario</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {bookings.map((booking) => (
-                <tr key={booking.id_booking}>
-                  <td>{booking.id_booking}</td>
-                  <td>{booking.start_time}</td>
-                  <td>{booking.end_time}</td>
+                <tr key={booking.id}>
+                  <td>{booking.id}</td>
+                  <td>{booking.startTime}</td>
+                  <td>{booking.endTime}</td>
                   <td>{booking.status}</td>
-                  <td>{booking.special_request}</td>
-                  <td>{booking.total_price}</td>
-                  <td>{booking.id_pet}</td>
-                  <td>{booking.id_service}</td>
-                  <td>{booking.id_user}</td>
+                  <td>{booking.specialRequest}</td>
+                  <td>$ {booking.totalPrice}</td>
+                  <td>{booking.pet.name}</td>
+                  <td>{booking.service.type}</td>
+                  <td>{booking.user.name}</td>
                   <td>
-                    <button className="btn btn-sm btn-error">Eliminar</button>
+                    <button onClick={() => handleOnDelete(booking.id)} className="btn btn-sm btn-error">Eliminar</button>
                   </td>
                 </tr>
               ))}

@@ -41,7 +41,7 @@ export const ServiceManagement = () => {
       setLoading(false);
     };
     loadServices();
-  }, [fetchServices]);
+  }, []);
 
   const handleEnable = (id) => {
     setServices((prevServices) =>
@@ -96,22 +96,22 @@ export const ServiceManagement = () => {
             </thead>
             <tbody>
               {services.map((service) => (
-                <tr key={service.id_service}>
-                  <td>{service.id_service}</td>
+                <tr key={service.id}>
+                  <td>{service.id}</td>
                   <td>{service.type}</td>
                   <td>{service.description}</td>
                   <td>{service.rate}</td>
-                  <td>{service.id_user}</td>
+                  <td>{service.owners.name}</td>
                   <td>{service.status ? "Activo" : "Bloqueado"}</td>
                   <td className="flex items-center justify-center gap-2">
                     <button
-                      onClick={() => unlockService(service.id_service)}
+                      onClick={() => unlockService(handleEnable)}
                       className="btn btn-sm btn-primary"
                     >
                       Desbloquear
                     </button>
                     <button
-                      onClick={() => blockService(service.id_service)}
+                      onClick={() => blockService(handleDisable)}
                       className="btn btn-sm btn-error"
                     >
                       Bloquear

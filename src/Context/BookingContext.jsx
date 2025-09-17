@@ -7,7 +7,7 @@ import {
   cancelBookingRequest,
   checkAvailabilityRequest,
 } from "../api/bookings.auth";
-import { getBookings } from "../api/bookings.api";
+import { getBookings, cancelBookings } from "../api/bookings.api";
 
 const BookingContext = createContext();
 
@@ -60,11 +60,11 @@ export const BookingProvider = ({ children }) => {
     }
   };
 
-  const cancelBooking = async (id) => {
+  const fetchCancelBooking = async (id) => {
     try {
-      const res = await cancelBookingRequest(id);
+      const res = await cancelBookings(id);
       if (res.status === 200) {
-        setBookings(bookings.filter((booking) => booking._id !== id));
+        setBookings(bookings.filter((booking) => booking.id !== id));
       }
     } catch (error) {
       console.error("Error canceling booking:", error);
@@ -89,7 +89,7 @@ export const BookingProvider = ({ children }) => {
         getBookingsBySitter,
         getAllBookings,
         createBooking,
-        cancelBooking,
+        fetchCancelBooking,
         checkAvailability,
       }}
     >

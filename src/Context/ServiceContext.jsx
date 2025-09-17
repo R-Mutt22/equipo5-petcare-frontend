@@ -26,7 +26,7 @@ export const ServiceProvider = ({ children }) => {
   const fetchServices = async () => {
     try {
       const data = await getServices();
-      setServices(data);
+      setServices(data.content);
     } catch (error) {
       console.error("Error al obtener servicios:", error);
     }

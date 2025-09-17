@@ -2,7 +2,7 @@ import axios from "./axios";
 
 // Obtener todos los servicios
 export const getServices = async () => {
-  const res = await axios.get("/services");
+  const res = await axios.get("/services/available");
   return res.data;
 };
 

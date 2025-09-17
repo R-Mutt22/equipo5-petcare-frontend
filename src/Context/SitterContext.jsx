@@ -35,7 +35,7 @@ export const SitterProvider = ({ children }) => {
       // const token = res.data;  
       // localStorage.setItem("sitter_token", token);  
       // const resSitter = await verifySitterTokenRequest({ token });  
-      // setSitter(resSitter);  
+      setSitter(true);  
       setIsAuthenticatedSitter(true);  
     } catch (error) {  
       if (Array.isArray(error.response.data)) {  
