@@ -1,36 +1,42 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Input } from '../Componentes/UI/Input';
-import { Button } from '../Componentes/UI/Button';
-import { Card } from '../Componentes/UI/Card';
-import { ErrorMessage } from '../Componentes/UI/ErrorMessage';
-import { useOwner } from '../Context/OwnerContext';
-import { useSitter } from '../Context/SitterContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Input } from "../Componentes/UI/Input";
+import { Button } from "../Componentes/UI/Button";
+import { Card } from "../Componentes/UI/Card";
+import { ErrorMessage } from "../Componentes/UI/ErrorMessage";
+import { useOwner } from "../Context/OwnerContext";
+import { useSitter } from "../Context/SitterContext";
+import { useNavigate } from "react-router-dom";
 
 const loginValidationSchema = Yup.object().shape({
-  email: Yup.string().email('Correo electrónico inválido').required('El correo electrónico es requerido'),
-  password: Yup.string().required('La contraseña es requerida'),
+  email: Yup.string()
+    .email("Correo electrónico inválido")
+    .required("El correo electrónico es requerido"),
+  password: Yup.string().required("La contraseña es requerida"),
 });
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const { signin: signinOwner, errors: ownerErrors, loadingOwner } = useOwner();
-  const { signin: signinSitter, errors: sitterErrors, loadingSitter } = useSitter();
+  const {
+    signin: signinSitter,
+    errors: sitterErrors,
+    loadingSitter,
+  } = useSitter();
 
-  const [userType, setUserType] = useState('owner');
+  const [userType, setUserType] = useState("owner");
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      if (userType === 'owner') {
+      if (userType === "owner") {
         await signinOwner(values);
-        navigate('/pets-list');
+        navigate("/bookings-list");
       } else {
         await signinSitter(values);
         navigate("/services-list");
@@ -38,7 +44,7 @@ export const LoginPage = () => {
     },
   });
 
-  // Combinar errores de ambos contextos  
+  // Combinar errores de ambos contextos
   const allErrors = [...ownerErrors, ...sitterErrors];
   const isLoading = loadingOwner || loadingSitter;
 
@@ -87,7 +93,7 @@ export const LoginPage = () => {
             className="w-full bg-[#407c87] hover:bg-[#a5dbdd] text-white"
             disabled={isLoading}
           >
-            {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
           </Button>
 
           {/* Mostrar errores de los contextos */}
@@ -102,4 +108,4 @@ export const LoginPage = () => {
       </Card>
     </div>
   );
-}
+};

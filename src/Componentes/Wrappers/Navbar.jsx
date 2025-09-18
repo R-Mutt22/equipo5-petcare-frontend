@@ -9,8 +9,8 @@ export const Navbar = () => {
   const navigate = useNavigate();
   // Determinar si hay algún usuario autenticado
   const isAuthenticated = isAuthenticatedOwner || isAuthenticatedSitter;
-  const isOwner = isAuthenticatedOwner && owner;
-  const isSitter = isAuthenticatedSitter && sitter;
+  const isOwner = isAuthenticatedOwner;
+  const isSitter = isAuthenticatedSitter;
 
   const handleLogout = () => {
     if (isOwner) {
@@ -48,46 +48,103 @@ export const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-w rounded-box w-52 text-hb"
           >
             <li>
-              <Link to="/" className="hover:bg-c">
+              <Link to="/" className="hover:bg-c transition-colors">
                 Inicio
               </Link>
             </li>
 
-            {/* Enlaces específicos para owners */}
+            {/* Botones de autenticación para usuarios NO autenticados */}
+            {!isAuthenticated && (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className="bg-ts text-w hover:bg-hb transition-colors rounded-md my-1 px-3 py-2"
+                  >
+                    Iniciar Sesión
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors rounded-md my-1 px-3 py-2"
+                  >
+                    Registrarse
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* Enlaces para owners autenticados */}
             {isOwner && (
               <>
                 <li>
-                  <Link to="/pets-list" className="hover:bg-c">
+                  <Link
+                    to="/pets-list"
+                    className="bg-ts text-w hover:bg-hb transition-colors rounded-md my-1 px-3 py-2"
+                  >
                     Mis Mascotas
                   </Link>
                 </li>
                 <li>
-                  <Link to="/bookings-list" className="hover:bg-c">
+                  <Link
+                    to="/bookings-list"
+                    className="bg-ts text-w hover:bg-hb transition-colors rounded-md my-1 px-3 py-2"
+                  >
                     Mis Reservas
                   </Link>
                 </li>
                 <li>
-                  <Link to="/search-services" className="hover:bg-c">
+                  <Link
+                    to="/search-services"
+                    className="bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors rounded-md my-1 px-3 py-2"
+                  >
                     Buscar Servicios
                   </Link>
                 </li>
               </>
             )}
 
-            {/* Enlaces específicos para sitters */}
+            {/* Enlaces para sitters autenticados */}
             {isSitter && (
               <>
                 <li>
-                  <Link to="/services-list" className="hover:bg-c">
+                  <Link
+                    to="/services-list"
+                    className="bg-ts text-w hover:bg-hb transition-colors rounded-md my-1 px-3 py-2"
+                  >
                     Mis Servicios
                   </Link>
                 </li>
                 <li>
-                  <Link to="/bookings-list" className="hover:bg-c">
+                  <Link
+                    to="/bookings-list"
+                    className="bg-ts text-w hover:bg-hb transition-colors rounded-md my-1 px-3 py-2"
+                  >
                     Mis Reservas
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/service-form"
+                    className="bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors rounded-md my-1 px-3 py-2"
+                  >
+                    Crear Servicio
+                  </Link>
+                </li>
               </>
+            )}
+
+            {/* Botón de logout para usuarios autenticados */}
+            {isAuthenticated && (
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors rounded-md my-1 px-3 py-2 w-full text-left"
+                >
+                  Cerrar Sesión
+                </button>
+              </li>
             )}
           </ul>
         </div>
@@ -127,64 +184,73 @@ export const Navbar = () => {
 
       <div className="navbar-end hidden lg:flex items-center">
         {!isAuthenticated ? (
-          // Botones para usuarios no autenticados
           <>
             <Link
               to="/login"
-              className="btn btn-sm mr-2 bg-ts text-w border-ts hover:bg-opacity-80 hover:border-ts"
+              className="btn btn-sm mr-2 bg-ts text-w border-ts hover:bg-hb hover:border-hb transition-colors"
             >
               Iniciar Sesión
             </Link>
             <Link
               to="/register"
-              className="btn btn-sm bg-transparent text-ts border border-ts hover:bg-ts hover:text-w"
+              className="btn btn-sm bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors"
             >
               Registrarse
             </Link>
           </>
         ) : (
-          // Botones para usuarios autenticados
           <>
-            {/* Enlaces específicos para owners */}
+            {/* Botones para owners */}
             {isOwner && (
               <>
                 <Link
                   to="/pets-list"
-                  className="btn btn-sm mr-2 btn-outline btn-primary"
+                  className="btn btn-sm mr-2 bg-ts text-w border-ts hover:bg-hb hover:border-hb transition-colors"
                 >
                   Mis Mascotas
                 </Link>
                 <Link
+                  to="/bookings-list"
+                  className="btn btn-sm mr-2 bg-ts text-w border-ts hover:bg-hb hover:border-hb transition-colors"
+                >
+                  Mis Reservas
+                </Link>
+                <Link
                   to="/search-services"
-                  className="btn btn-sm mr-2 btn-outline btn-secondary"
+                  className="btn btn-sm mr-2 bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors"
                 >
                   Buscar Servicios
                 </Link>
               </>
             )}
 
-            {/* Enlaces específicos para sitters */}
+            {/* Botones para sitters */}
             {isSitter && (
               <>
                 <Link
                   to="/services-list"
-                  className="btn btn-sm mr-2 btn-outline btn-primary"
+                  className="btn btn-sm mr-2 bg-ts text-w border-ts hover:bg-hb hover:border-hb transition-colors"
                 >
                   Mis Servicios
                 </Link>
                 <Link
+                  to="/bookings-list"
+                  className="btn btn-sm mr-2 bg-ts text-w border-ts hover:bg-hb hover:border-hb transition-colors"
+                >
+                  Mis Reservas
+                </Link>
+                <Link
                   to="/service-form"
-                  className="btn btn-sm mr-2 btn-outline btn-secondary"
+                  className="btn btn-sm mr-2 bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors"
                 >
                   Crear Servicio
                 </Link>
               </>
             )}
 
-            {/* Botón de logout común */}
             <button
               onClick={handleLogout}
-              className="btn btn-sm bg-red-500 text-white border-red-500 hover:bg-red-600"
+              className="btn btn-sm bg-transparent text-ts border border-ts hover:bg-ts hover:text-w transition-colors"
             >
               Cerrar Sesión
             </button>

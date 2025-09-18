@@ -32,7 +32,8 @@ import { BookingsListPage } from "./Views/BookingsListPage";
 import { PaymentPage } from "./Views/PaymentPage";
 import { PaymentSuccessPage } from "./Views/PaymentSuccessPage";
 import { PaymentFailurePage } from "./Views/PaymentFailurePage";
-import { ChatToggle } from "./Componentes/chat/ChatToggle";  
+import { ChatToggle } from "./Componentes/chat/ChatToggle";
+
 export const App = () => {
   return (
     <AppProviders>
@@ -40,72 +41,55 @@ export const App = () => {
         <Navbar />
 
         <Routes>
-          {/*Rutas publicas*/}
+          {/* Rutas públicas */}
           <Route path="/" element={<Homepage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<ServicePage />} />
           <Route path="/contact" element={<ContactPage />} />
+
+          {/* Rutas de pago (públicas pero requieren datos) */}
           <Route path="/create-booking" element={<CreateBookingPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/payment-failure" element={<PaymentFailurePage />} />
 
-          <Route element={<ProtectedRouteSitter />}>
-            <Route path="/services-list" element={<ServicesListPage />} />
-            <Route path="/services-form" element={<ServiceFormPage />} />
-          </Route>
-
+          {/* Rutas protegidas para Owners */}
           <Route element={<ProtectedRouteOwner />}>
-          </Route>
-
             <Route path="/pets-list" element={<PetsListPage />} />
             <Route
               path="/pets-list/pet-register"
               element={<PetRegisterPage />}
             />
             <Route
-              path="/pets-list/pet-edit/:id"
+              path="/pets-list/pet-edit/:id_pet"
               element={<PetEditPage />}
             />
-
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route element={<ProtectedRouteAdmin />}>
+            <Route path="/search-services" element={<SearchServicesPage />} />
+            <Route path="/bookings-list" element={<BookingsListPage />} />
           </Route>
 
+          {/* Rutas protegidas para Sitters */}
+          <Route element={<ProtectedRouteSitter />}>
+            <Route path="/services-list" element={<ServicesListPage />} />
+            <Route path="/service-form" element={<ServiceFormPage />} />
+            <Route path="/services-form" element={<ServiceFormPage />} />
+            <Route path="/bookings-list" element={<BookingsListPage />} />
+          </Route>
+
+          {/* Rutas de administración */}
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route element={<ProtectedRouteAdmin />}>
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/admin/users" element={<UserManagement />} />
             <Route path="/admin/services" element={<ServiceManagement />} />
             <Route path="/admin/bookings" element={<BookingManagement />} />
-
-            <Route path="/search-services" element={<SearchServicesPage />} />
-          {/* Rutas privadas */}
-          {/* Rutas protegidas para dueños */}
-          {/* <Route element={<ProtectedRouteOwner />}>  
-            <Route path="/my-pets" element={<PetManagement />} />  
-            <Route path="/my-bookings" element={<BookingsListPage />} />
-
-            <Route path="/service" element={<SearchServicesPage />} />
-
-          </Route>  */}
-
-          {/* Rutas protegidas para niñeras */}
-          {/* <Route element={<ProtectedRouteSitter />}>  
-            <Route path="/my-services" element={<ServiceManagement />} />  
-            <Route path="/sitter-bookings" element={<SitterBookings />} />  
-          </Route>   */}
-
-          {/* Rutas protegidas para administradores */}
-          {/* <Route element={<ProtectedRouteAdmin />}>  
-            <Route path="/admin" element={<AdminPanel />} />  
-            <Route path="/admin/users" element={<UserManagement />} />  
-            <Route path="/admin/services" element={<ServiceManagement />} />  
-            <Route path="/admin/bookings" element={<BookingManagement />} />  
-          </Route>  */}
+          </Route>
         </Routes>
+
         <Footer />
-        <ChatToggle />  
+        <ChatToggle />
       </BrowserRouter>
     </AppProviders>
   );

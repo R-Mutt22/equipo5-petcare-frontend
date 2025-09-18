@@ -9,9 +9,9 @@ import { useOwner } from "../Context/OwnerContext";
 
 export const PetsListPage = () => {
   const { pets, fetchGetPetsByOwner, removePet } = usePets();
-  const {owner} = useOwner();
+  const { owner } = useOwner();
   const [loading, setLoading] = useState(true);
-  const {navigate} = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadPets = async () => {
@@ -25,7 +25,7 @@ export const PetsListPage = () => {
       }
     };
     loadPets();
-  }, [fetchGetPetsByOwner]);
+  }, []);
 
   const handleOnEdit = (pets) => {
     console.log("Editar mascota: ", pets);

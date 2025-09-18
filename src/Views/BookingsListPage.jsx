@@ -8,49 +8,59 @@ import { useOwner } from "../Context/OwnerContext";
 
 export const BookingsListPage = () => {
   const { bookings, getBookingsByOwner, cancelBooking } = useBookings();
-  const { owner } = useOwner();
+  const { owner, isAuthenticatedOwner, loadingOwner } = useOwner();
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [activeTab, setActiveTab] = useState("active");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadBookings = async () => {
-      if (owner?.id) {
+      if (owner?.id && isAuthenticatedOwner) {
         setIsLoading(true);
-        await getBookingsByOwner(owner.id);
-        setIsLoading(false);
+        setError(null);
+        try {
+          await getBookingsByOwner(owner.id);
+          console.log("Reservas: ", filteredBookings);
+        } catch (error) {
+          console.error("Error cargando reservas:", error);
+          setError(
+            "Error al cargar las reservas. Por favor, intenta de nuevo."
+          );
+        } finally {
+          setIsLoading(false);
+        }
       }
     };
-    loadBookings();
-  }, [owner]);
+
+    if (!loadingOwner) {
+      loadBookings();
+    }
+  }, [owner, isAuthenticatedOwner, loadingOwner]);
 
   useEffect(() => {
     filterBookings();
   }, [bookings, activeTab, searchTerm]);
 
   const filterBookings = () => {
-    let filtered = bookings;
+    let filtered = bookings || [];
 
-    // Filtrar por estado (activas/pasadas)
+    // Filtrar por estado booleano (activas = true, inactivas = false)
     if (activeTab === "active") {
-      filtered = bookings.filter(
-        (booking) =>
-          booking.status === "confirmed" || booking.status === "pending"
-      );
-    } else if (activeTab === "past") {
-      filtered = bookings.filter(
-        (booking) =>
-          booking.status === "completed" || booking.status === "cancelled"
-      );
+      filtered = filtered.filter((booking) => booking.status === true);
+    } else if (activeTab === "inactive") {
+      filtered = filtered.filter((booking) => booking.status === false);
     }
 
     // Filtrar por término de búsqueda
     if (searchTerm.trim()) {
       filtered = filtered.filter(
         (booking) =>
-          booking.id_booking.toString().includes(searchTerm) ||
-          booking.status.toLowerCase().includes(searchTerm.toLowerCase())
+          booking.id?.toString().includes(searchTerm) ||
+          (booking.status ? "activa" : "inactiva").includes(
+            searchTerm.toLowerCase()
+          )
       );
     }
 
@@ -63,18 +73,41 @@ export const BookingsListPage = () => {
 
   const handleCancelBooking = async (bookingId) => {
     if (window.confirm("¿Estás seguro de que quieres cancelar esta reserva?")) {
-       await cancelBooking(bookingId);
+      try {
+        await cancelBooking(bookingId);
+        setError(null);
+      } catch (error) {
+        console.error("Error cancelando reserva:", error);
+        setError("Error al cancelar la reserva. Por favor, intenta de nuevo.");
+      }
     }
   };
 
   const handleEditBooking = (booking) => {
-    // Navegar al formulario de edición
     console.log("Editar reserva:", booking);
   };
 
-  if (isLoading) {
-    return <LoadingSpinner />;
+  // if (loadingOwner) {
+  //   return <LoadingSpinner />;
+  // }
+
+  if (!isAuthenticatedOwner || !owner) {
+    return (
+      <div className="min-h-screen bg-[#eef1f6] py-8">
+        <div className="container mx-auto px-4">
+          <EmptyState
+            title="Acceso requerido"
+            description="Debes iniciar sesión como propietario para ver tus reservas"
+            icon="🔒"
+          />
+        </div>
+      </div>
+    );
   }
+
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
 
   return (
     <div className="min-h-screen bg-[#eef1f6] py-8">
@@ -83,7 +116,20 @@ export const BookingsListPage = () => {
           Mis Reservas
         </h1>
 
-        {/* Tabs para filtrar reservas */}
+        <div className="bg-blue-50 p-3 rounded mb-4 max-w-4xl mx-auto">
+          <p className="text-sm text-blue-700">
+            <strong>Propietario:</strong> {owner.name || "Usuario"} (ID:{" "}
+            {owner.id})
+          </p>
+        </div>
+
+        {error && (
+          <div className="alert alert-error mb-4 max-w-4xl mx-auto">
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* Tabs para filtrar reservas por estado booleano */}
         <div className="flex justify-center mb-6">
           <div className="tabs tabs-boxed">
             <button
@@ -91,29 +137,18 @@ export const BookingsListPage = () => {
               onClick={() => setActiveTab("active")}
             >
               Activas (
-              {
-                bookings.filter(
-                  (b) => b.status === "confirmed" || b.status === "pending"
-                ).length
-              }
-              )
+              {(bookings || []).filter((b) => b.status === true).length})
             </button>
             <button
-              className={`tab ${activeTab === "past" ? "tab-active" : ""}`}
-              onClick={() => setActiveTab("past")}
+              className={`tab ${activeTab === "inactive" ? "tab-active" : ""}`}
+              onClick={() => setActiveTab("inactive")}
             >
-              Pasadas (
-              {
-                bookings.filter(
-                  (b) => b.status === "completed" || b.status === "cancelled"
-                ).length
-              }
-              )
+              Inactivas (
+              {(bookings || []).filter((b) => b.status === false).length})
             </button>
           </div>
         </div>
 
-        {/* Barra de búsqueda */}
         <div className="max-w-md mx-auto mb-6">
           <SearchBar
             onSearch={handleSearch}
@@ -122,7 +157,6 @@ export const BookingsListPage = () => {
           />
         </div>
 
-        {/* Contador de resultados */}
         {searchTerm && (
           <p className="text-center text-gray-600 mb-4">
             Resultados para: "{searchTerm}" ({filteredBookings.length}{" "}
@@ -130,14 +164,13 @@ export const BookingsListPage = () => {
           </p>
         )}
 
-        {/* Lista de reservas */}
         {filteredBookings.length === 0 ? (
           <EmptyState
             title={
               searchTerm
                 ? "No se encontraron reservas"
                 : `No tienes reservas ${
-                    activeTab === "active" ? "activas" : "pasadas"
+                    activeTab === "active" ? "activas" : "inactivas"
                   }`
             }
             description={
@@ -151,7 +184,7 @@ export const BookingsListPage = () => {
           <div className="max-w-4xl mx-auto space-y-4">
             {filteredBookings.map((booking) => (
               <BookingCard
-                key={booking.id_booking || booking._id}
+                key={booking.id}
                 booking={booking}
                 onCancel={handleCancelBooking}
                 onEdit={handleEditBooking}

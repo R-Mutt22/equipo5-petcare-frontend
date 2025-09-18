@@ -8,6 +8,7 @@ import {
   checkAvailabilityRequest,
 } from "../api/bookings.auth";
 import { getBookings, cancelBookings } from "../api/bookings.api";
+import { useOwner } from "./OwnerContext";
 
 const BookingContext = createContext();
 
@@ -34,6 +35,7 @@ export const BookingProvider = ({ children }) => {
   const getBookingsByOwner = async (ownerId) => {
     try {
       const res = await getBookingsByOwnerRequest(ownerId);
+      // console.log("BookingsContext:", res);
       setBookings(res.data);
     } catch (error) {
       console.error("Error fetching owner bookings:", error);
