@@ -6,7 +6,6 @@ import {
   updatePet,
   deletePet,
 } from "../api/pets.api";
-
 const PetContext = createContext();
 
 export const usePets = () => {
@@ -23,7 +22,7 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetsByOwner = async (ownerId) => {
     try {
       const res = await getPetsByOwner(ownerId);
-      console.log("Mascotas que devuelve el backend:", res.data);
+      console.log("getPetsByOwner response:", res.data);
       setPets(res.data);
     } catch (error) {
       console.error("Error fetching pets:", error);
@@ -34,7 +33,9 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetById = async (id) => {
     try {
       const res = await getPetById(id);
-      return res;
+      console.log(res.pets);
+      setPets(res.pets);
+      return res.data;
     } catch (error) {
       console.error("Error fetching pets:", error);
       throw error;

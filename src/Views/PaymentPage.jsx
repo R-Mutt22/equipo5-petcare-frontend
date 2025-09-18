@@ -9,32 +9,26 @@ export const PaymentPage = () => {
   const navigate = useNavigate();  
   const [isProcessing, setIsProcessing] = useState(false);  
     
-  // Datos de la reserva del formulario anterior  
-  const bookingData = location.state?.bookingData;  
+  // Datos de la reserva del formulario anterior    
+  const bookingData = location.state?.bookingData;    
   
-  useEffect(() => {  
-    if (!bookingData) {  
-      navigate('/create-booking');  
-    }  
-  }, [bookingData, navigate]);  
+  useEffect(() => {    
+    if (!bookingData) {    
+      navigate('/create-booking');    
+    }    
+  }, [bookingData, navigate]);   
   
-  const getServiceName = (serviceId) => {  
-    const services = {  
-      1: 'Paseo',  
-      2: 'Hospedaje',   
-      3: 'Cuidado Diario',  
-      4: 'Visita'  
-    };  
-    return services[serviceId] || 'Servicio';  
+  // Reemplazar funciones hardcodeadas con datos reales  
+  const getServiceName = (bookingData) => {    
+    return bookingData?.serviceInfo?.type || 'Servicio';    
+  };    
+  
+  const getPetName = (bookingData) => {    
+    return bookingData?.petInfo?.name || 'Mascota';    
   };  
   
-  const getPetName = (petId) => {  
-    const pets = {  
-      1: 'Max',  
-      2: 'Luna',  
-      3: 'Zeus'  
-    };  
-    return pets[petId] || 'Mascota';  
+  const getSitterName = (bookingData) => {  
+    return bookingData?.serviceInfo?.owners?.name || 'N/A';  
   };  
   
   const handleMockPayment = async (paymentMethod) => {  
@@ -83,29 +77,32 @@ export const PaymentPage = () => {
     );  
   }  
   
-  return (  
-    <div className="min-h-screen bg-[#eef1f6] flex items-center justify-center py-8">  
-      <Card title="Procesar Pago - Mockup" className="w-full max-w-lg">  
-        <div className="space-y-6">  
-            
-          {/* Banner de mockup */}  
-          <div className="bg-orange-50 p-3 rounded border border-orange-200">  
-            <p className="text-sm text-orange-800 text-center">  
-              🚧 <strong>MODO DEMO</strong> - Esta es una simulación de pago  
-            </p>  
-          </div>  
+  return (    
+    <div className="min-h-screen bg-[#eef1f6] flex items-center justify-center py-8">    
+      <Card title="Procesar Pago - Mockup" className="w-full max-w-lg">    
+        <div className="space-y-6">    
+          {/* Banner de mockup */}    
+          <div className="bg-orange-50 p-3 rounded border border-orange-200">    
+            <p className="text-sm text-orange-800 text-center">    
+              🚧 <strong>MODO DEMO</strong> - Esta es una simulación de pago    
+            </p>    
+          </div>    
   
-          {/* Resumen de la reserva */}  
-          <div className="bg-blue-50 p-4 rounded border border-blue-200">  
-            <h3 className="font-semibold text-blue-800 mb-2">Resumen de la Reserva</h3>  
-            <div className="space-y-1 text-sm text-blue-700">  
-              <p><strong>Servicio:</strong> {getServiceName(bookingData.id_service)}</p>  
-              <p><strong>Mascota:</strong> {getPetName(bookingData.id_pet)}</p>  
-              <p><strong>Fecha inicio:</strong> {new Date(bookingData.start_date).toLocaleString()}</p>  
-              <p><strong>Fecha fin:</strong> {new Date(bookingData.end_date).toLocaleString()}</p>  
-              <p><strong>Total a pagar:</strong> ${bookingData.total_price}</p>  
-            </div>  
-          </div>  
+          {/* Resumen de la reserva actualizado */}    
+          <div className="bg-blue-50 p-4 rounded border border-blue-200">    
+            <h3 className="font-semibold text-blue-800 mb-2">Resumen de la Reserva</h3>    
+            <div className="space-y-1 text-sm text-blue-700">    
+              <p><strong>Servicio:</strong> {getServiceName(bookingData)}</p>    
+              <p><strong>Mascota:</strong> {getPetName(bookingData)}</p>    
+              <p><strong>Sitter:</strong> {getSitterName(bookingData)}</p>  
+              <p><strong>Fecha inicio:</strong> {new Date(bookingData.start_date).toLocaleString()}</p>    
+              <p><strong>Fecha fin:</strong> {new Date(bookingData.end_date).toLocaleString()}</p>    
+              <p><strong>Total a pagar:</strong> ${bookingData.total_price}</p>    
+              {bookingData.special_requests && (  
+                <p><strong>Solicitudes especiales:</strong> {bookingData.special_requests}</p>  
+              )}  
+            </div>    
+          </div>   
   
           {/* Simulación de métodos de pago */}  
           <div className="space-y-3">  

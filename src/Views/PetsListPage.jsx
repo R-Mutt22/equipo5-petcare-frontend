@@ -8,24 +8,29 @@ import { usePets } from "../Context/PetContext";
 import { useOwner } from "../Context/OwnerContext";
 
 export const PetsListPage = () => {
-  const { pets, fetchGetPetsByOwner, removePet } = usePets();
+  const { pets, fetchGetPetsByOwner, fetchGetPetById, removePet } = usePets();
   const { owner } = useOwner();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  console.log(owner);
   useEffect(() => {
     const loadPets = async () => {
+      if (!owner?.id) {
+        setLoading(false);
+        return;
+      }
+
       try {
         await fetchGetPetsByOwner(owner.id);
         console.log("Mascotas cargadas:", pets);
       } catch (error) {
-        console.log("Error al cargar las mascotas");
+        console.log("Error al cargar las mascotas", error);
       } finally {
         setLoading(false);
       }
     };
     loadPets();
-  }, []);
+  }, [owner]);
 
   const handleOnEdit = (pets) => {
     console.log("Editar mascota: ", pets);

@@ -4,9 +4,17 @@ import { ServiceCard } from "../Componentes/Wrappers/ServiceCard";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 import { useServices } from "../Context/ServiceContext";
+import { useOwner } from "../Context/OwnerContext"; // Usar OwnerContext existente
+import { useNavigate } from "react-router-dom";
+import { usePets } from "../Context/PetContext"; // Agregar PetContext  
 
 export const SearchServicesPage = () => {
   const { services, fetchServices } = useServices();
+  const { owner, isAuthenticatedOwner } = useOwner(); // Obtener owner del contexto
+    const { pets, fetchGetPetsByOwner } = usePets(); // Obtener mascotas del contexto  
+
+  const navigate = useNavigate();
+
   const [filteredServices, setFilteredServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,37 +47,34 @@ export const SearchServicesPage = () => {
     );
     setFilteredServices(filtered);
   };
-
+  // Detectar si hay un owner autenticado
+  const isOwner = isAuthenticatedOwner && owner;
+   // Cargar mascotas del owner cuando se monta el componente  
+  useEffect(() => {  
+    if (owner?.id) {  
+      fetchGetPetsByOwner(owner.id);  
+    }  
+  }, [owner?.id]);  
+  /* 
   const handleServiceSelect = (service) => {
     // Aquí se navegaría al formulario de crear reserva (Feature-023)
     console.log("Servicio seleccionado:", service);
     // navigate('/create-booking', { state: { selectedService: service } });
-  };
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  }; */
+  // Función para manejar la reserva  
+  const handleMakeBooking = (service) => {  
+    navigate('/create-booking', {   
+      state: {   
+        selectedService: service,  
+        userId: owner?.id,  
+        userPets: pets, // Enviar todas las mascotas del owner  
+      }   
+    });  
+  };  
 
   return (
     <div className="min-h-screen bg-[#eef1f6] flex flex-col items-center py-8">
-      <h1 className="text-2xl font-bold text-[#407c87] mb-6">
-        Buscar Servicios Disponibles
-      </h1>
-
-      <div className="w-full max-w-2xl mb-6">
-        <SearchBar
-          onSearch={handleSearch}
-          searchType="services"
-          className="w-full"
-        />
-      </div>
-
-      {searchTerm && (
-        <p className="text-gray-600 mb-4">
-          Resultados para: "{searchTerm}" ({filteredServices.length}{" "}
-          encontrados)
-        </p>
-      )}
+      {/* Resto del JSX existente hasta las tarjetas */}
 
       {filteredServices.length === 0 ? (
         <EmptyState
@@ -84,16 +89,14 @@ export const SearchServicesPage = () => {
       ) : (
         <div className="w-full max-w-2xl grid gap-4">
           {filteredServices.map((service) => (
-            <div
+            <ServiceCard
               key={service._id || service.id_service}
-              onClick={() => handleServiceSelect(service)}
-            >
-              <ServiceCard
-                service={service}
-                onEdit={() => {}} // Deshabilitar edición para owners
-                onDelete={() => {}} // Deshabilitar eliminación para owners
-              />
-            </div>
+              service={service}
+              isOwner={isOwner}
+              onMakeBooking={() => handleMakeBooking(service)}
+              onEdit={() => {}} // Solo para sitters
+              onDelete={() => {}} // Solo para sitters
+            />
           ))}
         </div>
       )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useFormik } from "formik";
 import { Card } from "../Componentes/UI/Card";
@@ -8,36 +8,34 @@ import { CustomDatePicker } from "../Componentes/UI/DatePicker";
 import { Button } from "../Componentes/UI/Button";
 import { Input } from "../Componentes/UI/Input";
 
-// Datos hardcodeados para testing
-const mockPets = [
-  { id_pet: 1, name: "Max", species: "Perro" },
-  { id_pet: 2, name: "Luna", species: "Gato" },
-  { id_pet: 3, name: "Zeus", species: "Perro" },
-];
-
-const mockServices = [
-  { id_service: 1, type: "Paseo", rate: 1500 },
-  { id_service: 2, type: "Hospedaje", rate: 5000 },
-  { id_service: 3, type: "Cuidado Diario", rate: 2500 },
-  { id_service: 4, type: "Visita", rate: 1000 },
-];
-
-const mockOwner = { id: 1, name: "Juan Pérez" };
-
 export const CreateBookingPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Agregar esta línea
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Obtener datos reales desde la navegación
+  const { selectedService, userId, userPets } = location.state || {};
+  console.log("selectedService:", selectedService);
+  console.log("userId:", userId);
+  console.log("userPets:", userPets);
+  //");
+  // Redireccionar si no hay datos necesarios
+  useEffect(() => {
+    if (!selectedService || !userId || !userPets) {
+      navigate("/search-services");
+    }
+  }, [selectedService, userId, userPets, navigate]);
 
   const formik = useFormik({
     initialValues: {
-      id_user: mockOwner.id,
-      id_service: "",
+      id_user: userId || "",
+      id_service: selectedService.id,
       id_pet: "",
       start_date: null,
       end_date: null,
       special_requests: "",
       total_price: 0,
-      status: "pending",
+      status: true,
     },
     validate: (values) => {
       const errors = {};
@@ -70,10 +68,19 @@ export const CreateBookingPage = () => {
       try {
         setIsLoading(true);
 
-        // En lugar de crear la reserva directamente, navegar a la página de pago
+        // Agregar información adicional del servicio y mascota seleccionada
+        const selectedPet = userPets.find((pet) => pet.id_pet == values.id_pet);
+
+        const bookingData = {
+          ...values,
+          serviceInfo: selectedService,
+          petInfo: selectedPet,
+        };
+
+        // Navegar a la página de pago con todos los datos
         navigate("/payment", {
           state: {
-            bookingData: values,
+            bookingData,
           },
         });
       } catch (error) {
@@ -84,13 +91,10 @@ export const CreateBookingPage = () => {
     },
   });
 
-  // Obtener el servicio seleccionado
-  const selectedService = mockServices.find(
-    (s) => s.id_service == formik.values.id_service
-  );
+  // Usar el servicio real en lugar del mock
   const serviceType = selectedService?.type;
 
-  // Calcular precio total con validación de duración
+  // Calcular precio total usando el servicio real
   useEffect(() => {
     if (selectedService && formik.values.start_date && formik.values.end_date) {
       const startTime = new Date(formik.values.start_date);
@@ -131,12 +135,7 @@ export const CreateBookingPage = () => {
     } else {
       formik.setFieldValue("total_price", 0);
     }
-  }, [
-    formik.values.id_service,
-    formik.values.start_date,
-    formik.values.end_date,
-    serviceType,
-  ]);
+  }, [formik.values.start_date, formik.values.end_date, selectedService]);
 
   // Configuración específica del DatePicker según tipo de servicio
   const getDatePickerConfig = (isEndDate = false) => {
@@ -212,17 +211,12 @@ export const CreateBookingPage = () => {
     return baseConfig;
   };
 
-  const petOptions = mockPets.map((pet) => ({
-    value: pet.id_pet,
-    label: `${pet.name} (${pet.species})`,
-  }));
-
-  const serviceOptions = mockServices.map((service) => ({
-    value: service.id_service,
-    label: `${service.type} - $${service.rate}/${
-      service.type === "Paseo" || service.type === "Visita" ? "hora" : "día"
-    }`,
-  }));
+  // Generar opciones reales para mascotas
+  const petOptions =
+    userPets?.map((pet) => ({
+      value: pet.id_pet,
+      label: `${pet.name} (${pet.species})`,
+    })) || [];
 
   const isFormValid =
     formik.values.id_pet &&
@@ -232,13 +226,30 @@ export const CreateBookingPage = () => {
     formik.values.total_price > 0 &&
     !Object.keys(formik.errors).length;
 
+  // Mostrar loading si no hay datos
+  if (!selectedService || !userPets) {
+    return <div>Cargando...</div>;
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center m-6 bg-[#eef1f6]">
       <Card title="Crear Nueva Reserva" className="w-full max-w-lg">
         <form onSubmit={formik.handleSubmit} className="space-y-4">
+          {/* Información del owner */}
           <div className="bg-blue-50 p-3 rounded mb-4">
             <p className="text-sm text-blue-700">
-              <strong>Owner:</strong> {mockOwner.name} (ID: {mockOwner.id})
+              <strong>Owner ID:</strong> {userId}
+            </p>
+          </div>
+
+          {/* Información del servicio seleccionado */}
+          <div className="bg-green-50 p-3 rounded mb-4">
+            <p className="text-sm text-green-700">
+              <strong>Servicio:</strong> {selectedService.type} - $
+              {selectedService.rate}
+            </p>
+            <p className="text-sm text-green-700">
+              <strong>Sitter:</strong> {selectedService.owners?.name || "N/A"}
             </p>
           </div>
 
@@ -249,21 +260,6 @@ export const CreateBookingPage = () => {
             onChange={(e) => formik.setFieldValue("id_pet", e.target.value)}
             placeholder="Selecciona una mascota"
             error={formik.touched.id_pet && formik.errors.id_pet}
-            required
-          />
-
-          <Select
-            label="Seleccionar Servicio"
-            options={serviceOptions}
-            value={formik.values.id_service}
-            onChange={(e) => {
-              formik.setFieldValue("id_service", e.target.value);
-              // Limpiar fechas cuando cambia el servicio
-              formik.setFieldValue("start_date", null);
-              formik.setFieldValue("end_date", null);
-            }}
-            placeholder="Selecciona un servicio"
-            error={formik.touched.id_service && formik.errors.id_service}
             required
           />
 

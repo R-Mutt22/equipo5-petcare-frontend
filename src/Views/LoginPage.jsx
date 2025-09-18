@@ -36,7 +36,7 @@ export const LoginPage = () => {
     onSubmit: async (values) => {
       if (userType === "owner") {
         await signinOwner(values);
-        navigate("/bookings-list");
+        navigate("/pets-list");
       } else {
         await signinSitter(values);
         navigate("/services-list");
