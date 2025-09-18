@@ -17,6 +17,7 @@ export const getPetById = async (id) => {
 
 //Actualiza una mascota por el id
 export const updatePet = async (id, pet) => {
+  console.log("tipo de dato id: ",typeof(id));
   return await axios.put(`/pets/${id}`, pet);
 };
 

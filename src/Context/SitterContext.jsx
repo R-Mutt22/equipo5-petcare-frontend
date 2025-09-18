@@ -20,8 +20,6 @@ export const SitterProvider = ({ children }) => {
   const signup = async (sitterData) => {  
     try {  
       const res = await registerSitterRequest(sitterData);  
-      // const token = res.data;  
-      // localStorage.setItem("sitter_token", token);  
       setSitter(res.data);  
       setIsAuthenticatedSitter(true);  
     } catch (error) {  
@@ -31,12 +29,11 @@ export const SitterProvider = ({ children }) => {
   
   const signin = async (sitterData) => {  
     try {  
-      const res = await loginSitterRequest(sitterData);  
-      // const token = res.data;  
-      // localStorage.setItem("sitter_token", token);  
-      // const resSitter = await verifySitterTokenRequest({ token });  
-      setSitter(true);  
-      setIsAuthenticatedSitter(true);  
+        const res = await loginSitterRequest(sitterData);  
+        const { token, user } = res.data; 
+        localStorage.setItem("sitter_token", token);  
+        setSitter(user); // Guardar información del usuario  
+        setIsAuthenticatedSitter(true);  
     } catch (error) {  
       if (Array.isArray(error.response.data)) {  
         return setErrors(error.response.data);  
@@ -51,34 +48,34 @@ export const SitterProvider = ({ children }) => {
     setIsAuthenticatedSitter(false);  
   };  
   
-  // Verificación de token automática  
-  // useEffect(() => {  
-  //   async function checkLogin() {  
-  //     const token = localStorage.getItem("sitter_token");  
-  //     if (!token) {  
-  //       setIsAuthenticatedSitter(false);  
-  //       setSitter(null);  
-  //       setLoadingSitter(false);  
-  //       return;  
-  //     }  
-  //     try {  
-  //       const res = await verifySitterTokenRequest({ token });  
-  //       if (!res) {  
-  //         setIsAuthenticatedSitter(false);  
-  //         setLoadingSitter(false);  
-  //         return;  
-  //       }  
-  //       setIsAuthenticatedSitter(true);  
-  //       setSitter(res);  
-  //       setLoadingSitter(false);  
-  //     } catch (error) {  
-  //       setIsAuthenticatedSitter(false);  
-  //       setSitter(null);  
-  //       setLoadingSitter(false);  
-  //     }  
-  //   }  
-  //   checkLogin();  
-  // }, []);  
+   //Verificación de token automática  
+   useEffect(() => {  
+     async function checkLogin() {  
+       const token = localStorage.getItem("sitter_token");  
+       if (!token) {  
+         setIsAuthenticatedSitter(false);  
+         setSitter(null);  
+         setLoadingSitter(false);  
+         return;  
+       }  
+       try {  
+         const res = await verifySitterTokenRequest({ token });  
+         if (!res) {  
+           setIsAuthenticatedSitter(false);  
+           setLoadingSitter(false);  
+           return;  
+         }  
+         setIsAuthenticatedSitter(true);  
+         setSitter(res);  
+         setLoadingSitter(false);  
+       } catch (error) {  
+         setIsAuthenticatedSitter(false);  
+         setSitter(null);  
+         setLoadingSitter(false);  
+       }  
+     }  
+     checkLogin();  
+   }, []);  
   
   return (  
     <SitterContext.Provider value={{  

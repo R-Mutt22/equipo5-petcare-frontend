@@ -51,16 +51,19 @@ export const BookingProvider = ({ children }) => {
     }
   };
 
-  const createBooking = async (booking) => {
-    try {
-      const res = await createBookingRequest(booking);
-      setBookings([...bookings, res.data]);
-      return res.data;
-    } catch (error) {
-      console.error("Error creating booking:", error);
-      throw error;
-    }
-  };
+  const createBooking = async (booking) => {  
+  try {  
+    const res = await createBookingRequest(booking);  
+    setBookings([...bookings, res.data]);  
+    return res.data;  
+  } catch (error) {  
+    if (error.response?.status === 403) {  
+      console.error("No tienes permisos para crear esta reserva");  
+    }  
+    console.error("Error creating booking:", error);  
+    throw error;  
+  }  
+};
 
   const fetchCancelBooking = async (id) => {
     try {

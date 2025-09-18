@@ -1,41 +1,53 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import { serviceValidationSchema } from '../utils/validationSchemas';
-import { Input } from '../Componentes/UI/Input';
-import { Select } from '../Componentes/UI/Select';
-import { Button } from '../Componentes/UI/Button';
-import { ErrorMessage } from '../Componentes/UI/ErrorMessage';
-import { Card } from '../Componentes/UI/Card';
-import { useServices } from '../Context/ServiceContext';
-
-const serviceTypes = [
-  { value: 'walking', label: 'Paseo' },
-  { value: 'daycare', label: 'Cuidado Diario' },
-  { value: 'boarding', label: 'Hospedaje' },
-  { value: 'visiting', label: 'Visita' },
-];
-
-
-export const ServiceFormPage = () => {
-  const { addService } = useServices();
-  const formik = useFormik({
-    initialValues: {
-      type: '',
-      description: '',
-      rate: '',
-      id_user: '', // Si es necesario según el schema
-    },
-    validationSchema: serviceValidationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        await addService(values);
-        alert('Servicio guardado correctamente');
-        resetForm();
-      } catch (error) {
-        alert('Error al guardar el servicio');
-      }
-    },
-  });
+import React from 'react';  
+import { useFormik } from 'formik';  
+import { serviceValidationSchema } from '../utils/validationSchemas';  
+import { Input } from '../Componentes/UI/Input';  
+import { Select } from '../Componentes/UI/Select';  
+import { Button } from '../Componentes/UI/Button';  
+import { ErrorMessage } from '../Componentes/UI/ErrorMessage';  
+import { Card } from '../Componentes/UI/Card';  
+import { useServices } from '../Context/ServiceContext';  
+import { useSitter } from '../Context/SitterContext'; // Importar el contexto  
+  
+const serviceTypes = [  
+  { value: 'walking', label: 'Paseo' },  
+  { value: 'daycare', label: 'Cuidado Diario' },  
+  { value: 'boarding', label: 'Hospedaje' },  
+  { value: 'visiting', label: 'Visita' },  
+];  
+  
+export const ServiceFormPage = () => {  
+  const { addService } = useServices();  
+  const { sitter } = useSitter(); // Obtener datos del sitter autenticado  
+    
+  const formik = useFormik({  
+    initialValues: {  
+      type: '',  
+      description: '',  
+      rate: '',  
+      id_user: sitter?.id || '', // Usar el ID del sitter autenticado  
+    },  
+    validationSchema: serviceValidationSchema,  
+    onSubmit: async (values, { resetForm }) => {  
+      console.log('Valores del formulario:', values);  
+      try {  
+        console.log('Enviando valores:', values);  
+        await addService(values);  
+        alert('Servicio guardado correctamente');  
+        resetForm();  
+      } catch (error) {  
+        console.error('Error completo:', error);  
+        alert('Error al guardar el servicio: ' + (error.message || 'Error desconocido'));  
+      }  
+    },  
+  });  
+  
+  // Actualizar id_user cuando cambie el sitter  
+  React.useEffect(() => {  
+    if (sitter?.id) {  
+      formik.setFieldValue('id_user', sitter.id);  
+    }  
+  }, [sitter?.id]);  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#eef1f6]">

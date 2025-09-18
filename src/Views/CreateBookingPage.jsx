@@ -93,7 +93,25 @@ export const CreateBookingPage = () => {
 
   // Usar el servicio real en lugar del mock
   const serviceType = selectedService?.type;
+  // Función para categorizar servicios basado en palabras clave
+  const categorizeService = (serviceType) => {
+    if (!serviceType) return "unknown";
 
+    const type = serviceType.toLowerCase();
+
+    if (type.includes("paseo")) return "paseo";
+    if (type.includes("visita")) return "visita";
+    if (
+      type.includes("guardería") ||
+      type.includes("guarderia") ||
+      type.includes("hospedaje")
+    )
+      return "hospedaje";
+    if (type.includes("cuidado")) return "cuidado";
+
+    // Por defecto, asumir que es cuidado diario
+    return "cuidado";
+  };
   // Calcular precio total usando el servicio real
   useEffect(() => {
     if (selectedService && formik.values.start_date && formik.values.end_date) {
@@ -115,14 +133,12 @@ export const CreateBookingPage = () => {
 
       if (endTime > startTime) {
         let calculatedPrice = 0;
+        const category = categorizeService(serviceType);
 
-        if (serviceType === "Paseo" || serviceType === "Visita") {
+        if (category === "paseo" || category === "visita") {
           const hours = Math.ceil((endTime - startTime) / (1000 * 60 * 60));
           calculatedPrice = selectedService.rate * hours;
-        } else if (serviceType === "Hospedaje") {
-          const days = Math.ceil((endTime - startTime) / (1000 * 60 * 60 * 24));
-          calculatedPrice = selectedService.rate * days;
-        } else if (serviceType === "Cuidado Diario") {
+        } else if (category === "hospedaje" || category === "cuidado") {
           const days = Math.ceil((endTime - startTime) / (1000 * 60 * 60 * 24));
           calculatedPrice = selectedService.rate * days;
         }
@@ -137,9 +153,10 @@ export const CreateBookingPage = () => {
     }
   }, [formik.values.start_date, formik.values.end_date, selectedService]);
 
-  // Configuración específica del DatePicker según tipo de servicio
   const getDatePickerConfig = (isEndDate = false) => {
     if (!serviceType) return {};
+
+    const category = categorizeService(serviceType);
 
     // Horario laboral argentino: 6:00 a 21:00
     const workingHoursStart = new Date();
@@ -157,7 +174,7 @@ export const CreateBookingPage = () => {
       maxTime: workingHoursEnd,
     };
 
-    if (serviceType === "Paseo" || serviceType === "Visita") {
+    if (category === "paseo" || category === "visita") {
       // Paseos y visitas: mismo día únicamente
       return {
         ...baseConfig,
@@ -172,7 +189,6 @@ export const CreateBookingPage = () => {
           }
           return day !== 0 && day !== 6 && date >= new Date();
         },
-        // Para fecha de fin en el mismo día, usar la hora de inicio como mínimo
         ...(isEndDate &&
           formik.values.start_date &&
           formik.values.end_date &&
@@ -184,7 +200,7 @@ export const CreateBookingPage = () => {
                 : workingHoursStart,
           }),
       };
-    } else if (serviceType === "Hospedaje") {
+    } else if (category === "hospedaje") {
       // Hospedaje: múltiples días permitidos
       return {
         ...baseConfig,
@@ -195,8 +211,8 @@ export const CreateBookingPage = () => {
           return day !== 0 && day !== 6 && date >= minDate;
         },
       };
-    } else if (serviceType === "Cuidado Diario") {
-      // Cuidado diario: múltiples días, horarios específicos
+    } else if (category === "cuidado") {
+      // Cuidado: múltiples días, horarios específicos
       return {
         ...baseConfig,
         minDate: isEndDate ? formik.values.start_date : new Date(),

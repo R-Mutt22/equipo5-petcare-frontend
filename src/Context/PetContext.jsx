@@ -55,6 +55,7 @@ export const PetProvider = ({ children }) => {
   };
 
   const editPet = async (id, pet) => {
+    console.log("desde petcontext id:", id);
     try {
       console.log("Soy editPet con información!!");
       const res = await updatePet(id, pet);

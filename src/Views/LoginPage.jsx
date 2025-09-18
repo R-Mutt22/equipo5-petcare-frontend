@@ -34,12 +34,23 @@ export const LoginPage = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      if (userType === "owner") {
-        await signinOwner(values);
-        navigate("/pets-list");
-      } else {
-        await signinSitter(values);
-        navigate("/services-list");
+      try {
+        if (userType === "owner") {
+          await signinOwner(values);
+          // Solo redirigir si no hay errores
+          if (ownerErrors.length === 0) {
+            navigate("/pets-list");
+          }
+        } else {
+          await signinSitter(values);
+          // Solo redirigir si no hay errores
+          if (sitterErrors.length === 0) {
+            navigate("/services-list");
+          }
+        }
+      } catch (error) {
+        // Los errores se manejan en los contextos
+        console.error("Error en el login:", error);
       }
     },
   });
