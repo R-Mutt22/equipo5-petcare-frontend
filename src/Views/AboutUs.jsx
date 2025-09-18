@@ -1,38 +1,42 @@
 import React from 'react';
 // Importamos los íconos que usaremos
 import { FaHeart, FaShieldAlt, FaUsers, FaPaw } from 'react-icons/fa';
-
+import christianImg from '../assets/images/christian_ivan_cachero.jpg';
+import sergioImg from '../assets/images/sergio_zuñiga_fraga.jpg';
+import matiasImg from '../assets/images/matias_nehuen_malpartida.jpg';
+import matíasImg from '../assets/images/matías_zelarayán.jpg';
+import cristhianImg from '../assets/images/cristhian_rodrigo_sosa_zurita.jpg';
 // Datos de ejemplo para el equipo. Puedes reemplazarlos con los datos reales.
 const teamMembers = [
   {
     name: "Christian Ivan Cachero",
     role: "Desarrollador Backend",
-    image: "",
-    bio: "Completar..."
+    image: christianImg,
+    
   },
   {
     name: "Sergio Zuñiga Fraga",
     role: "Desarrollador Backend y Frontend",
-    image: "",
-    bio: "Completar..."
+    image: sergioImg,
+    
   },
   {
     name: "Matias Nehuen Malpartida",
     role: "Desarrollador Backend",
-    image: "",
-    bio: "Completar..."
+    image: matiasImg,
+    
   },
   {
     name: "Matías Zelarayán",
     role: "Desarrollador Frontend",
-    image: "",
-    bio: "Completar..."
+    image: matíasImg,
+    
   },
   {
     name: "Cristhian Rodrigo Sosa Zurita",
     role: "Desarrollador Frontend",
-    image: "", 
-    bio: "Completar..."
+    image: cristhianImg, 
+    
   }
 ];
 
