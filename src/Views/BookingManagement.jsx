@@ -108,7 +108,7 @@ export const BookingManagement = () => {
                   <td>{booking.id}</td>
                   <td>{booking.startTime}</td>
                   <td>{booking.endTime}</td>
-                  <td>{booking.status}</td>
+                  <td>{booking.status ? "Activo" : "Inactivo"}</td>
                   <td>{booking.specialRequest}</td>
                   <td>$ {booking.totalPrice}</td>
                   <td>{booking.pet.name}</td>
