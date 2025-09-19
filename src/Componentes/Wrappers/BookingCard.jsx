@@ -40,7 +40,7 @@ export const BookingCard = ({ booking, onCancel, onEdit }) => {
           </p>
         </div>
         <div className="flex gap-2">
-          {booking.status === "confirmed" && (
+          {booking.status === true && (
             <>
               <button
                 onClick={() => onEdit(booking)}
@@ -49,7 +49,7 @@ export const BookingCard = ({ booking, onCancel, onEdit }) => {
                 Editar
               </button>
               <button
-                onClick={() => onCancel(booking.id)}
+                onClick={() => onCancel(booking.id, booking)}
                 className="btn btn-sm btn-error"
               >
                 Cancelar

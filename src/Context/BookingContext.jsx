@@ -7,7 +7,12 @@ import {
   cancelBookingRequest,
   checkAvailabilityRequest,
 } from "../api/bookings.auth";
-import { createBooking, getBookings, cancelBookings } from "../api/bookings.api";
+import {
+  createBooking,
+  getBookings,
+  cancelBookings,
+  deleteBookings,
+} from "../api/bookings.api";
 
 const BookingContext = createContext();
 
@@ -50,30 +55,46 @@ export const BookingProvider = ({ children }) => {
     }
   };
 
-  const fetchCreateBooking = async (booking) => {  
-  try {  
-    console.log("Aquí se obtiene booking: ", booking);
-    const res = await createBooking(booking);  
-    console.log("Este es res: ", res);
-    setBookings([...bookings, res.data]);  
-    return res.data;  
-  } catch (error) {  
-    if (error.response?.status === 403) {  
-      console.error("No tienes permisos para crear esta reserva");  
-    }  
-    console.error("Error creating booking:", error);  
-    throw error;  
-  }  
-};
-
-  const fetchCancelBooking = async (id) => {
+  const fetchCreateBooking = async (booking) => {
     try {
-      const res = await cancelBookings(id);
+      console.log("Aquí se obtiene booking: ", booking);
+      const res = await createBooking(booking);
+      console.log("Este es res: ", res);
+      setBookings([...bookings, res.data]);
+      return res.data;
+    } catch (error) {
+      if (error.response?.status === 403) {
+        console.error("No tienes permisos para crear esta reserva");
+      }
+      console.error("Error creating booking:", error);
+      throw error;
+    }
+  };
+
+  const fetchCancelBooking = async (id, booking) => {
+    try {
+      console.log("Este es el id: ", id);
+      console.log("Este es booking parametro: ", booking);
+      console.log("Soy editPet con información!!");
+      const res = await cancelBookings(id, booking);
+      console.log("Este es res: ", res);
+      const updateBookingStatus = bookings.map((booking) =>
+        booking.id === id ? res.data : booking
+      );
+      setBookings(updateBookingStatus);
+    } catch (error) {
+      console.error("Error canceling booking:", error);
+    }
+  };
+
+  const fetchDeleteBooking = async (id) => {
+    try {
+      const res = await deleteBookings(id);
       if (res.status === 204) {
         setBookings(bookings.filter((booking) => booking.id !== id));
       }
     } catch (error) {
-      console.error("Error canceling booking:", error);
+      console.error("Error deleting booking:", error);
     }
   };
 
@@ -96,6 +117,7 @@ export const BookingProvider = ({ children }) => {
         getAllBookings,
         fetchCreateBooking,
         fetchCancelBooking,
+        fetchDeleteBooking,
         checkAvailability,
       }}
     >

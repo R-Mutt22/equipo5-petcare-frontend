@@ -41,9 +41,9 @@ import { useNavigate } from "react-router-dom";
 // ];
 
 export const BookingManagement = () => {
-  const { bookings, getAllBookings, fetchCancelBooking } = useBookings();
+  const { bookings, getAllBookings, fetchDeleteBooking } = useBookings();
   const [loading, setLoading] = useState(true);
-  const {navigate} = useNavigate();
+  const { navigate } = useNavigate();
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -60,7 +60,7 @@ export const BookingManagement = () => {
 
   const handleOnDelete = async (id) => {
     if (window.confirm("¿Estás seguro de eliminar esta reserva?")) {
-      await fetchCancelBooking(id);
+      await fetchDeleteBooking(id);
     }
   };
 
@@ -115,7 +115,12 @@ export const BookingManagement = () => {
                   <td>{booking.service.type}</td>
                   <td>{booking.user.name}</td>
                   <td>
-                    <button onClick={() => handleOnDelete(booking.id)} className="btn btn-sm btn-error">Eliminar</button>
+                    <button
+                      onClick={() => handleOnDelete(booking.id)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Eliminar
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -89,7 +89,7 @@ export const ServiceManagement = () => {
                 <th>Tipo</th>
                 <th>Descripción</th>
                 <th>Tarifa</th>
-                <th>ID_User</th>
+                <th>Nombre de usuario</th>
                 <th>Estado</th>
                 <th className="text-center">Acciones</th>
               </tr>

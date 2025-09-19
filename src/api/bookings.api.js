@@ -14,7 +14,12 @@ export const getBookingsByOwner = async (ownerId) => {
   return await axios.get(`/bookings/owner/${ownerId}`);
 };
 
-//Eliminar la reservas por su id
-export const cancelBookings = async (id) => {
+//Cancela una reserva por su id
+export const cancelBookings = async (id, booking) => {
+  return await axios.put(`/bookings/${id}`, booking);
+};
+
+//Eliminar una reserva por su id
+export const deleteBookings = async (id) => {
   return await axios.delete(`/bookings/${id}`);
 };

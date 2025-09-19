@@ -7,7 +7,7 @@ import { useBookings } from "../Context/BookingContext";
 import { useOwner } from "../Context/OwnerContext";
 
 export const BookingsListPage = () => {
-  const { bookings, getBookingsByOwner, cancelBooking } = useBookings();
+  const { bookings, getBookingsByOwner, fetchCancelBooking } = useBookings();
   const { owner, isAuthenticatedOwner, loadingOwner } = useOwner();
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [activeTab, setActiveTab] = useState("active");
@@ -71,10 +71,10 @@ export const BookingsListPage = () => {
     setSearchTerm(term);
   };
 
-  const handleCancelBooking = async (bookingId) => {
+  const handleCancelBooking = async (id, booking) => {
     if (window.confirm("¿Estás seguro de que quieres cancelar esta reserva?")) {
       try {
-        await cancelBooking(bookingId);
+        await fetchCancelBooking(id, booking);
         setError(null);
       } catch (error) {
         console.error("Error cancelando reserva:", error);
