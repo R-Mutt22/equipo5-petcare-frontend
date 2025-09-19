@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-export const SearchBar = ({
+export const SearchBarAdmin = ({
   onSearch,
   searchType = "users", // "users", "pets", "services", "bookings"
   placeholder = "Buscar...",
   className = "",
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [role, setRole] = useState("");
   const [status, setStatus] = useState("");
 
   const getPlaceholder = () => {
@@ -26,7 +27,7 @@ export const SearchBar = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchTerm, status);
+    onSearch(searchTerm, role, status);
   };
 
   return (
@@ -47,6 +48,16 @@ export const SearchBar = ({
         <option value="">Todos los estados</option>
         <option value="Activo">Activo</option>
         <option value="Inactivo">Inactivo</option>
+      </select>
+
+      <select
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        className="input input-bordered"
+      >
+        <option value="">Todos los roles</option>
+        <option value="OWNER">OWNER</option>
+        <option value="SITTER">SITTER</option>
       </select>
       <button type="submit" className="btn btn-primary">
         Buscar

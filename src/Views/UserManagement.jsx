@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
-import { SearchBar } from "../Componentes/Wrappers/SearchBar";
+import { SearchBarAdmin } from "../Componentes/Wrappers/SearchBarAdmin";
 import { EmptyState } from "../Componentes/UI/EmptyState";
 import { disableUser, enableUser, getUsers } from "../api/user.api";
 
@@ -136,7 +136,7 @@ export const UserManagement = () => {
         </>
       ) : users.length === 0 ? (
         <>
-          <SearchBar onSearch={handleOnSearch} searchType="users" />
+          <SearchBarAdmin onSearch={handleOnSearch} searchType="users" />
           <EmptyState
             title="Sin resultados"
             description="No se encontraron usuarios con los filtros aplicados"
@@ -145,7 +145,7 @@ export const UserManagement = () => {
         </>
       ) : (
         <>
-          <SearchBar onSearch={handleOnSearch} searchType="users" />
+          <SearchBarAdmin onSearch={handleOnSearch} searchType="users" />
           <table className="table table-zebra w-full">
             <thead>
               <tr>
@@ -155,7 +155,6 @@ export const UserManagement = () => {
                 <th>Rol</th>
                 <th>Teléfono</th>
                 <th>Estado</th>
-                <th>Registro</th>
                 <th className="text-center">Acciones</th>
               </tr>
             </thead>
@@ -168,7 +167,6 @@ export const UserManagement = () => {
                   <td>{user.role}</td>
                   <td>{user.phone}</td>
                   <td>{user.status ? "Activo" : "Bloqueado"}</td>
-                  <td>{user.createdAt}</td>
                   <td className="flex items-center justify-center gap-2">
                     <button
                       onClick={() => handleEnable(user.id_user)}
