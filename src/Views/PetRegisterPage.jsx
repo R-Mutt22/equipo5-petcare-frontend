@@ -7,10 +7,11 @@ import { petValidationSchema } from "../utils/validationSchemas";
 import { ErrorMessage } from "../Componentes/UI/ErrorMessage";
 import { usePets } from "../Context/PetContext";
 import { LoadingSpinner } from "../Componentes/UI/LoadingSpinner";
+import { useOwner } from "../Context/OwnerContext";
 
 export const PetRegisterPage = () => {
   const { addPet } = usePets();
-
+  const { owner } = useOwner();
   const [loading, setLoading] = useState(true);
 
   const formik = useFormik({
@@ -20,12 +21,13 @@ export const PetRegisterPage = () => {
       breed: "",
       age: "",
       specialNotes: "",
-      ownerId: "",
+      ownerId: owner?.id || "",
     },
     validationSchema: petValidationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        await addPet(values);
+        console.log("Enviando valores:", values);
+        await addPet({ ownerId: owner.id }, values);
         alert("Mascota guardada exitosamente");
         resetForm();
       } catch (error) {
@@ -122,20 +124,6 @@ export const PetRegisterPage = () => {
             value={formik.values.specialNotes}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-          />
-
-          <Input
-            type="number"
-            label="Id del dueño"
-            name="ownerId"
-            placeholder="Introduce el id del dueño de la mascota"
-            value={formik.values.ownerId}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <ErrorMessage
-            message={formik.errors.ownerId}
-            touched={formik.touched.ownerId}
           />
 
           <Button

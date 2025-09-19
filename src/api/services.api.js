@@ -13,8 +13,11 @@ export const getServiceById = async (id) => {
 };
 
 // Crear un nuevo servicio
-export const createService = async (serviceData) => {
-  const res = await axios.post("/services", serviceData);
+export const createService = async (data, serviceData) => {
+  // console.log("Id para crear servicio: ", data.idSitter);
+  // console.log("ServiceData para crear servicio: ", serviceData);
+  const res = await axios.post(`/services/${data.idSitter}`, serviceData);
+  // console.log("Este es res en createService línea 19: ", res);
   return res.data;
 };
 

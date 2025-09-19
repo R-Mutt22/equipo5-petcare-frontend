@@ -60,7 +60,7 @@ export const ServicesListPage = () => {
         <div className="w-full max-w-2xl grid gap-4">
           {services.map(service => (
             <ServiceCard
-              key={service._id || service.id_service}
+              key={service.id}
               service={service}
               onEdit={handleEdit}
               onDelete={handleDelete}

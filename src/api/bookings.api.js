@@ -1,5 +1,9 @@
 import axios from "./axios";
 
+export const createBooking = async (booking) => {
+  return await axios.post("/bookings", booking);
+};
+
 //Obtener todas las reservas
 export const getBookings = async () => {
   return await axios.get("/bookings");

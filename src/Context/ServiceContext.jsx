@@ -44,11 +44,13 @@ export const ServiceProvider = ({ children }) => {
   };
 
   // Crear servicio
-  const addService = async (serviceData) => {
+  const addService = async (data, serviceData) => {
     try {
-      const newService = await createService(serviceData);
-      setServices([...services, newService]);
-      return newService;
+      console.log("serviceData previo: ", serviceData);
+      const res = await createService(data, serviceData);
+      setServices([...services, res.data]);
+      console.log("En serviceContext es res.data: ", res);
+      return res.data;
     } catch (error) {
       console.error("Error al crear servicio:", error);
       throw error;

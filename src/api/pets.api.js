@@ -1,8 +1,8 @@
 import axios from "./axios";
 
 //Crear una mascota
-export const createPet = async (pet) => {
-  return await axios.post("/pets", pet);
+export const createPet = async (data, pet) => {
+  return await axios.post(`/pets/${data.ownerId}`, pet);
 };
 
 //Obtiene las mascotas por el id del dueño
@@ -17,7 +17,6 @@ export const getPetById = async (id) => {
 
 //Actualiza una mascota por el id
 export const updatePet = async (id, pet) => {
-  console.log("tipo de dato id: ",typeof(id));
   return await axios.put(`/pets/${id}`, pet);
 };
 

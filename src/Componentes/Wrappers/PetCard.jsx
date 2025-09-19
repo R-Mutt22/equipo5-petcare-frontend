@@ -11,16 +11,15 @@ export const PetCard = ({ pet, onEdit, onDelete }) => {
           <p className="font-medium text-gray-800 text-lg">{pet.name}</p>
           <p className="font-medium text-gray-600">TIPO: {pet.species}</p>
           <p className="font-medium text-gray-600">RAZA: {pet.breed}</p>
-          <p className="font-medium text-gray-600">EDAD: {pet.age} años</p>
+          <p className="font-medium text-gray-600">
+            EDAD: {pet.age} {pet.age === 1 ? "año" : "años"}
+          </p>
         </div>
         <div className="flex gap-2">
           <button onClick={() => onEdit(petId)} className="btn btn-sm btn-info">
             Editar
           </button>
-          <button
-            onClick={onDelete}
-            className="btn btn-sm btn-error"
-          >
+          <button onClick={onDelete} className="btn btn-sm btn-error">
             Eliminar
           </button>
         </div>
