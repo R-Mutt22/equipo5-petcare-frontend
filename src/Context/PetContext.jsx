@@ -32,7 +32,7 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetById = async (id) => {
     try {
       const res = await getPetById(id);
-      
+
       setPets(res.pets);
       return res.data;
     } catch (error) {
@@ -41,11 +41,12 @@ export const PetProvider = ({ children }) => {
     }
   };
 
-  const addPet = async (pet) => {
-    console.log(pet);
+  const addPet = async (data, pet) => {
     try {
-      const res = await createPet(pet);
+      console.log("pet previo: ", pet);
+      const res = await createPet(data, pet);
       setPets([...pets, res.data]);
+      console.log("En petContext es res.data: ", res);
       return res.data;
     } catch (error) {
       console.error("Error creating pet:", error);
@@ -59,7 +60,7 @@ export const PetProvider = ({ children }) => {
       const res = await updatePet(id, pet);
       if (Array.isArray(pets)) {
         const updatedPets = pets.map((pet) => (pet.id === id ? res.data : pet));
-        setPets(updatedPets);  // Actualizas el estado con la lista de mascotas actualizada
+        setPets(updatedPets); // Actualizas el estado con la lista de mascotas actualizada
         console.log("Este es pets actualizado directamente: ", updatedPets);
       } else {
         console.error("El estado de pets no es un array", pets);

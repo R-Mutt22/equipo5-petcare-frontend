@@ -7,8 +7,7 @@ import {
   cancelBookingRequest,
   checkAvailabilityRequest,
 } from "../api/bookings.auth";
-import { getBookings, cancelBookings } from "../api/bookings.api";
-import { useOwner } from "./OwnerContext";
+import { createBooking, getBookings, cancelBookings } from "../api/bookings.api";
 
 const BookingContext = createContext();
 
@@ -51,9 +50,11 @@ export const BookingProvider = ({ children }) => {
     }
   };
 
-  const createBooking = async (booking) => {  
+  const fetchCreateBooking = async (booking) => {  
   try {  
-    const res = await createBookingRequest(booking);  
+    console.log("Aquí se obtiene booking: ", booking);
+    const res = await createBooking(booking);  
+    console.log("Este es res: ", res);
     setBookings([...bookings, res.data]);  
     return res.data;  
   } catch (error) {  
@@ -68,7 +69,7 @@ export const BookingProvider = ({ children }) => {
   const fetchCancelBooking = async (id) => {
     try {
       const res = await cancelBookings(id);
-      if (res.status === 200) {
+      if (res.status === 204) {
         setBookings(bookings.filter((booking) => booking.id !== id));
       }
     } catch (error) {
@@ -93,7 +94,7 @@ export const BookingProvider = ({ children }) => {
         getBookingsByOwner,
         getBookingsBySitter,
         getAllBookings,
-        createBooking,
+        fetchCreateBooking,
         fetchCancelBooking,
         checkAvailability,
       }}

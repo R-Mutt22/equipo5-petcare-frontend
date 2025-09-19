@@ -31,10 +31,10 @@ export const CreateBookingPage = () => {
       id_user: userId || "",
       id_service: selectedService.id,
       id_pet: "",
-      start_date: null,
-      end_date: null,
-      special_requests: "",
-      total_price: 0,
+      startTime: null,
+      endTime: null,
+      specialRequest: "",
+      totalPrice: 0,
       status: true,
     },
     validate: (values) => {
@@ -48,17 +48,17 @@ export const CreateBookingPage = () => {
         errors.id_service = "Debes seleccionar un servicio";
       }
 
-      if (!values.start_date) {
-        errors.start_date = "La fecha de inicio es requerida";
+      if (!values.startTime) {
+        errors.startTime = "La fecha de inicio es requerida";
       }
 
-      if (!values.end_date) {
-        errors.end_date = "La fecha de fin es requerida";
+      if (!values.endTime) {
+        errors.endTime = "La fecha de fin es requerida";
       }
 
-      if (values.start_date && values.end_date) {
-        if (new Date(values.end_date) <= new Date(values.start_date)) {
-          errors.end_date = "La fecha de fin debe ser posterior al inicio";
+      if (values.startTime && values.endTime) {
+        if (new Date(values.endTime) <= new Date(values.startTime)) {
+          errors.endTime = "La fecha de fin debe ser posterior al inicio";
         }
       }
 
@@ -69,7 +69,7 @@ export const CreateBookingPage = () => {
         setIsLoading(true);
 
         // Agregar información adicional del servicio y mascota seleccionada
-        const selectedPet = userPets.find((pet) => pet.id_pet == values.id_pet);
+        const selectedPet = userPets.find((pet) => pet.id == values.id);
 
         const bookingData = {
           ...values,
@@ -114,9 +114,9 @@ export const CreateBookingPage = () => {
   };
   // Calcular precio total usando el servicio real
   useEffect(() => {
-    if (selectedService && formik.values.start_date && formik.values.end_date) {
-      const startTime = new Date(formik.values.start_date);
-      const endTime = new Date(formik.values.end_date);
+    if (selectedService && formik.values.startTime && formik.values.endTime) {
+      const startTime = new Date(formik.values.startTime);
+      const endTime = new Date(formik.values.endTime);
 
       // Validar horario laboral (6:00 - 21:00)
       const startHour = startTime.getHours();
@@ -124,10 +124,10 @@ export const CreateBookingPage = () => {
 
       if (startHour < 6 || startHour > 21 || endHour < 6 || endHour > 21) {
         formik.setFieldError(
-          "start_date",
+          "startTime",
           "Las reservas solo están disponibles de 6:00 a 21:00 hs"
         );
-        formik.setFieldValue("total_price", 0);
+        formik.setFieldValue("totalPrice", 0);
         return;
       }
 
@@ -143,15 +143,15 @@ export const CreateBookingPage = () => {
           calculatedPrice = selectedService.rate * days;
         }
 
-        formik.setFieldValue("total_price", calculatedPrice);
-        formik.setFieldError("start_date", "");
+        formik.setFieldValue("totalPrice", calculatedPrice);
+        formik.setFieldError("startTime", "");
       } else {
-        formik.setFieldValue("total_price", 0);
+        formik.setFieldValue("totalPrice", 0);
       }
     } else {
-      formik.setFieldValue("total_price", 0);
+      formik.setFieldValue("totalPrice", 0);
     }
-  }, [formik.values.start_date, formik.values.end_date, selectedService]);
+  }, [formik.values.startTime, formik.values.endTime, selectedService]);
 
   const getDatePickerConfig = (isEndDate = false) => {
     if (!serviceType) return {};
@@ -178,25 +178,25 @@ export const CreateBookingPage = () => {
       // Paseos y visitas: mismo día únicamente
       return {
         ...baseConfig,
-        minDate: isEndDate ? formik.values.start_date : new Date(),
-        maxDate: isEndDate ? formik.values.start_date : undefined,
+        minDate: isEndDate ? formik.values.startTime : new Date(),
+        maxDate: isEndDate ? formik.values.startTime : undefined,
         filterDate: (date) => {
           const day = date.getDay();
-          if (isEndDate && formik.values.start_date) {
+          if (isEndDate && formik.values.startTime) {
             return (
-              date.toDateString() === formik.values.start_date.toDateString()
+              date.toDateString() === formik.values.startTime.toDateString()
             );
           }
           return day !== 0 && day !== 6 && date >= new Date();
         },
         ...(isEndDate &&
-          formik.values.start_date &&
-          formik.values.end_date &&
-          formik.values.start_date.toDateString() ===
-            formik.values.end_date.toDateString() && {
+          formik.values.startTime &&
+          formik.values.endTime &&
+          formik.values.startTime.toDateString() ===
+            formik.values.endTime.toDateString() && {
             minTime:
-              formik.values.start_date > workingHoursStart
-                ? formik.values.start_date
+              formik.values.startTime > workingHoursStart
+                ? formik.values.startTime
                 : workingHoursStart,
           }),
       };
@@ -204,10 +204,10 @@ export const CreateBookingPage = () => {
       // Hospedaje: múltiples días permitidos
       return {
         ...baseConfig,
-        minDate: isEndDate ? formik.values.start_date : new Date(),
+        minDate: isEndDate ? formik.values.startTime : new Date(),
         filterDate: (date) => {
           const day = date.getDay();
-          const minDate = isEndDate ? formik.values.start_date : new Date();
+          const minDate = isEndDate ? formik.values.startTime : new Date();
           return day !== 0 && day !== 6 && date >= minDate;
         },
       };
@@ -215,10 +215,10 @@ export const CreateBookingPage = () => {
       // Cuidado: múltiples días, horarios específicos
       return {
         ...baseConfig,
-        minDate: isEndDate ? formik.values.start_date : new Date(),
+        minDate: isEndDate ? formik.values.startTime : new Date(),
         filterDate: (date) => {
           const day = date.getDay();
-          const minDate = isEndDate ? formik.values.start_date : new Date();
+          const minDate = isEndDate ? formik.values.startTime : new Date();
           return day !== 0 && date >= minDate;
         },
       };
@@ -230,16 +230,16 @@ export const CreateBookingPage = () => {
   // Generar opciones reales para mascotas
   const petOptions =
     userPets?.map((pet) => ({
-      value: pet.id_pet,
+      value: pet.id,
       label: `${pet.name} (${pet.species})`,
     })) || [];
 
   const isFormValid =
     formik.values.id_pet &&
     formik.values.id_service &&
-    formik.values.start_date &&
-    formik.values.end_date &&
-    formik.values.total_price > 0 &&
+    formik.values.startTime &&
+    formik.values.endTime &&
+    formik.values.totalPrice > 0 &&
     !Object.keys(formik.errors).length;
 
   // Mostrar loading si no hay datos
@@ -299,73 +299,73 @@ export const CreateBookingPage = () => {
 
           <CustomDatePicker
             label="Fecha y Hora de Inicio"
-            selected={formik.values.start_date}
+            selected={formik.values.startTime}
             onChange={(date) => {
-              formik.setFieldValue("start_date", date);
+              formik.setFieldValue("startTime", date);
               // Limpiar fecha de fin cuando cambia la fecha de inicio
-              if (formik.values.end_date) {
+              if (formik.values.endTime) {
                 if (serviceType === "Paseo" || serviceType === "Visita") {
                   // Para paseos, mantener el mismo día pero limpiar la hora
-                  formik.setFieldValue("end_date", null);
-                } else if (date && formik.values.end_date <= date) {
-                  formik.setFieldValue("end_date", null);
+                  formik.setFieldValue("endTime", null);
+                } else if (date && formik.values.endTime <= date) {
+                  formik.setFieldValue("endTime", null);
                 }
               }
             }}
             placeholderText="Selecciona fecha y hora de inicio"
-            error={formik.touched.start_date && formik.errors.start_date}
+            error={formik.touched.startTime && formik.errors.startTime}
             {...getDatePickerConfig(false)}
           />
 
           <CustomDatePicker
             label="Fecha y Hora de Fin"
-            selected={formik.values.end_date}
-            onChange={(date) => formik.setFieldValue("end_date", date)}
+            selected={formik.values.endTime}
+            onChange={(date) => formik.setFieldValue("endTime", date)}
             placeholderText="Selecciona fecha y hora de fin"
-            error={formik.touched.end_date && formik.errors.end_date}
-            disabled={!formik.values.start_date}
+            error={formik.touched.endTime && formik.errors.endTime}
+            disabled={!formik.values.startTime}
             {...getDatePickerConfig(true)}
           />
 
           <Input
             type="text"
             label="Solicitudes Especiales"
-            name="special_requests"
+            name="specialRequest"
             placeholder="Instrucciones adicionales para el cuidador"
-            value={formik.values.special_requests}
+            value={formik.values.specialRequest}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
 
           <div
             className={`p-4 rounded border ${
-              formik.values.total_price > 0
+              formik.values.totalPrice > 0
                 ? "bg-green-50 border-green-200"
                 : "bg-gray-50 border-gray-200"
             }`}
           >
             <p
               className={`font-medium ${
-                formik.values.total_price > 0
+                formik.values.totalPrice > 0
                   ? "text-green-800"
                   : "text-gray-600"
               }`}
             >
-              Precio Total: ${formik.values.total_price}
+              Precio Total: ${formik.values.totalPrice}
             </p>
-            {formik.values.start_date &&
-              formik.values.end_date &&
+            {formik.values.startTime &&
+              formik.values.endTime &&
               serviceType && (
                 <p
                   className={`text-sm mt-1 ${
-                    formik.values.total_price > 0
+                    formik.values.totalPrice > 0
                       ? "text-green-600"
                       : "text-gray-500"
                   }`}
                 >
                   {(() => {
-                    const startTime = new Date(formik.values.start_date);
-                    const endTime = new Date(formik.values.end_date);
+                    const startTime = new Date(formik.values.startTime);
+                    const endTime = new Date(formik.values.endTime);
 
                     if (serviceType === "Paseo" || serviceType === "Visita") {
                       const hours = Math.ceil(
@@ -385,9 +385,9 @@ export const CreateBookingPage = () => {
                   })()}
                 </p>
               )}
-            {formik.errors.end_date && (
+            {formik.errors.endTime && (
               <p className="text-sm text-red-600 mt-1">
-                ⚠️ {formik.errors.end_date}
+                ⚠️ {formik.errors.endTime}
               </p>
             )}
           </div>

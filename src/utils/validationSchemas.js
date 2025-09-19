@@ -47,18 +47,18 @@ export const bookingValidationSchema = Yup.object().shape({
   id_user: Yup.number().required("El ID del usuario es requerido"),
   id_service: Yup.number().required("El ID del servicio es requerido"),
   id_pet: Yup.number(),
-  start_date: Yup.date()
+  startTime: Yup.date()
     .min(new Date(), "La fecha de inicio debe ser futura")
     .required("La fecha de inicio es requerida"),
-  end_date: Yup.date()
+  endTime: Yup.date()
     .min(Yup.ref("start_date"), "La fecha de fin debe ser posterior al inicio")
     .required("La fecha de fin es requerida"),
   status: Yup.string().oneOf(
     ["pending", "confirmed", "in_progress", "completed", "cancelled"],
     "Estado inválido"
   ),
-  special_requests: Yup.string(),
-  total_price: Yup.number()
+  specialRequests: Yup.string(),
+  totalPrice: Yup.number()
     .min(0, "El precio total debe ser mayor o igual a 0")
     .required("El precio total es requerido"),
 });

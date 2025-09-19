@@ -1,3 +1,5 @@
+import { dateFormatter, timeFormatter } from "../../utils/formatters";
+
 export const BookingCard = ({ booking, onCancel, onEdit }) => {
   return (
     <div className="bg-white p-4 rounded-lg my-2 shadow-md">
@@ -7,19 +9,21 @@ export const BookingCard = ({ booking, onCancel, onEdit }) => {
             RESERVA #{booking.id}
           </p>
           <p className="font-medium text-gray-600">
-            USUARIO ID: {booking.user.name}
+            NOMBRE USUARIO: {booking.user.name}
           </p>
           <p className="font-medium text-gray-600">
-            SERVICIO ID: {booking.service.type}
+            NOMBRE SERVICIO: {booking.service.type}
           </p>
           <p className="font-medium text-gray-600">
-            MASCOTA ID: {booking.pet.name}
+            NOMBRE MASCOTA: {booking.pet.name}
           </p>
           <p className="font-medium text-gray-600">
-            INICIO: {new Date(booking.startTime).toLocaleString()}
+            INICIO: {dateFormatter.format(new Date(booking.startTime))}{" "}
+            {timeFormatter.format(new Date(booking.startTime))}
           </p>
           <p className="font-medium text-gray-600">
-            FIN: {new Date(booking.endTime).toLocaleString()}
+            FIN: {dateFormatter.format(new Date(booking.endTime))}{" "}
+            {timeFormatter.format(new Date(booking.endTime))}
           </p>
           <p className="font-medium text-gray-600">
             PRECIO TOTAL: ${booking.totalPrice}
