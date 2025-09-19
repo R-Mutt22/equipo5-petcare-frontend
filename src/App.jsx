@@ -63,7 +63,7 @@ export const App = () => {
               element={<PetRegisterPage />}
             />
             <Route
-              path="/pets-list/pet-edit/:id_pet"
+              path="/pets-list/pet-edit/:id"
               element={<PetEditPage />}
             />
             <Route path="/search-services" element={<SearchServicesPage />} />

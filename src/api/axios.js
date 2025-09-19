@@ -16,7 +16,8 @@ instance.interceptors.request.use(
         const token = ownerToken || sitterToken || adminToken;  
           
         if (token) {  
-            config.headers.Authorization = `Bearer ${token}`;  
+            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.Verifier = 'petcare';  
         }  
           
         return config;  

@@ -40,7 +40,7 @@ export const serviceValidationSchema = Yup.object().shape({
   rate: Yup.number()
     .positive("La tarifa debe ser positiva")
     .required("La tarifa es requerida"),
-  id_user: Yup.number().required("El ID del usuario es requerido"),
+  idSitter: Yup.number().required("El ID del usuario es requerido"),
 });
 
 export const bookingValidationSchema = Yup.object().shape({

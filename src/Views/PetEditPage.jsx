@@ -40,7 +40,7 @@ export const PetEditPage = () => {
     const loadPet = async () => {
       try {
         const pet = await fetchGetPetById(id);
-        formik.setValues(pet.data);
+        formik.setValues(pet);
       } catch (error) {
         console.log("Error al cargar mascota", error);
       } finally {
@@ -48,7 +48,7 @@ export const PetEditPage = () => {
       }
     };
     loadPet();
-  }, [pets.id]);
+  }, [id]);
 
   if (loading) {
     return (

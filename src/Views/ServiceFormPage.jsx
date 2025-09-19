@@ -25,14 +25,13 @@ export const ServiceFormPage = () => {
       type: '',  
       description: '',  
       rate: '',  
-      id_user: sitter?.id || '', // Usar el ID del sitter autenticado  
+      idSitter: sitter?.id || '', // Usar el ID del sitter autenticado  
     },  
     validationSchema: serviceValidationSchema,  
     onSubmit: async (values, { resetForm }) => {  
-      console.log('Valores del formulario:', values);  
       try {  
         console.log('Enviando valores:', values);  
-        await addService(values);  
+        await addService({idSitter: sitter.id}, values);  
         alert('Servicio guardado correctamente');  
         resetForm();  
       } catch (error) {  
@@ -43,11 +42,11 @@ export const ServiceFormPage = () => {
   });  
   
   // Actualizar id_user cuando cambie el sitter  
-  React.useEffect(() => {  
-    if (sitter?.id) {  
-      formik.setFieldValue('id_user', sitter.id);  
-    }  
-  }, [sitter?.id]);  
+  // React.useEffect(() => {  
+  //   if (sitter?.id) {  
+  //     formik.setFieldValue('idSitter', sitter.id);  
+  //   }  
+  // }, [sitter?.id]);  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#eef1f6]">

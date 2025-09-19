@@ -22,7 +22,6 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetsByOwner = async (ownerId) => {
     try {
       const res = await getPetsByOwner(ownerId);
-      console.log("getPetsByOwner response:", res.data);
       setPets(res.data);
     } catch (error) {
       console.error("Error fetching pets:", error);
@@ -33,7 +32,7 @@ export const PetProvider = ({ children }) => {
   const fetchGetPetById = async (id) => {
     try {
       const res = await getPetById(id);
-      console.log(res.pets);
+      
       setPets(res.pets);
       return res.data;
     } catch (error) {
@@ -55,11 +54,16 @@ export const PetProvider = ({ children }) => {
   };
 
   const editPet = async (id, pet) => {
-    console.log("desde petcontext id:", id);
     try {
-      console.log("Soy editPet con información!!");
+      // console.log("Soy editPet con información!!");
       const res = await updatePet(id, pet);
-      setPets(pets.map((pet) => (pet.id === id ? res.data : pet)));
+      if (Array.isArray(pets)) {
+        const updatedPets = pets.map((pet) => (pet.id === id ? res.data : pet));
+        setPets(updatedPets);  // Actualizas el estado con la lista de mascotas actualizada
+        console.log("Este es pets actualizado directamente: ", updatedPets);
+      } else {
+        console.error("El estado de pets no es un array", pets);
+      }
       return res.data;
     } catch (error) {
       console.error("Error updating pet:", error);
