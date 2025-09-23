@@ -28,3 +28,15 @@ export const formatDuration = (hours) => {
   if (remainingHours === 0) return `${days} día${days > 1 ? 's' : ''}`;  
   return `${days} día${days > 1 ? 's' : ''} y ${remainingHours} hora${remainingHours > 1 ? 's' : ''}`;  
 };
+
+export const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  weekday: "short",
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+
+export const timeFormatter = new Intl.DateTimeFormat("en-US", {
+  hour: "2-digit",
+  minute: "2-digit",
+});
